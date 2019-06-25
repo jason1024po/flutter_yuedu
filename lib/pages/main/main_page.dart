@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:flutter_yuedu/pages/bookshelf/book_shelf_page.dart';
 import 'package:flutter_yuedu/pages/course/course_page.dart';
 import 'package:flutter_yuedu/pages/home/home_page.dart';
@@ -52,6 +53,11 @@ class _MainPageState extends State<MainPage> {
       },
     ];
     super.initState();
+
+    Future.delayed(Duration(seconds: 1), () {
+      // 隐藏启动屏
+      FlutterSplashScreen.hide();
+    });
   }
 
   @override
