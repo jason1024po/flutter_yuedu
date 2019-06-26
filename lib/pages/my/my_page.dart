@@ -135,14 +135,13 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
               child: Container(
             height: 5,
             decoration: BoxDecoration(
-                color: Colors.red,
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color.fromARGB((255 * elevation).toInt(), 240, 240, 240),
-                      Color.fromARGB(0, 240, 240, 240)
-                    ])),
+                  Color.fromARGB((255 * elevation).toInt(), 240, 240, 240),
+                  Color.fromARGB(0, 240, 240, 240)
+                ])),
           ))
         ],
       ),

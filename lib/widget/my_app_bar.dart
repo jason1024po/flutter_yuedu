@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 /// appbar 返回按钮类型
 enum AppBarBackType { Back, Close, None }
 
+const double kNavigationBarHeight = 44.0;
+
 // 自定义 AppBar
 class MyAppBar extends AppBar with PreferredSizeWidget {
   @override
-  get preferredSize => Size.fromHeight(44);
+  get preferredSize => Size.fromHeight(kNavigationBarHeight);
   MyAppBar(
       {Key key,
       Widget title,

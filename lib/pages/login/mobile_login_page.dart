@@ -105,6 +105,7 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
       ),
       child: TextField(
         cursorColor: Colors.amber,
+        keyboardAppearance: Brightness.light,
         onChanged: _mobileTextChange,
         decoration: InputDecoration(
             border: InputBorder.none,

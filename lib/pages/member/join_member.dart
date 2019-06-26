@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
-const APPBAR_SCROLL_OFFSET = 160;
+const APPBAR_SCROLL_OFFSET = 100;
 
 class JoinMember extends StatefulWidget {
   @override
@@ -13,7 +13,6 @@ class _JoinMemberState extends State<JoinMember> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).padding.top);
     double _paddingTop = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Color(0xfff7f7f8),
@@ -65,42 +64,40 @@ class _JoinMemberState extends State<JoinMember> {
                       ],
                       color: Colors.white,
                     ),
-                    height: 800,
+                    height: 300,
                     child: Text("你还不是会员"),
                   )
                 ],
               )),
-          Container(
-            height:
-                kBottomNavigationBarHeight + MediaQuery.of(context).padding.top,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(
-                              (_appBarAlpha * 100).toInt(), 150, 150, 150),
-                          blurRadius: 3)
-                    ]),
-                    height: 1,
-                  ),
+          MediaQuery.removePadding(
+              removeTop: true,
+              removeBottom: true,
+              context: context,
+              child: Container(
+                height: kNavigationBarHeight + _paddingTop,
+                padding: EdgeInsets.only(top: _paddingTop),
+                color:
+                    Color.fromARGB((_appBarAlpha * 255).toInt(), 255, 255, 255),
+                child: MyAppBar(
+                  backgroundColor: Colors.transparent,
                 ),
-                Container(
-                  color: Color.fromARGB(
-                      (_appBarAlpha * 255).toInt(), 255, 255, 255),
-                ),
-                Positioned(
-                    top: _paddingTop + kBottomNavigationBarHeight / 2 - 12,
-                    left: MediaQuery.of(context).padding.left + 18,
-                    child: AppBarBack()),
-              ],
-            ),
-          ),
+              )),
+          Positioned(
+              top: kNavigationBarHeight + _paddingTop,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 5,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      Color.fromARGB(
+                          (120 * _appBarAlpha).toInt(), 245, 245, 245),
+                      Color.fromARGB(0, 240, 240, 240)
+                    ])),
+              )),
           Positioned(
               right: 18,
               bottom: MediaQuery.of(context).padding.bottom + 20,
