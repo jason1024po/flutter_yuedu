@@ -18,9 +18,6 @@ class _MainPageState extends State<MainPage> {
   final _defaultColor = Color(0xff999999);
   final _activeColor = Color(0xff666666);
 
-  // 当前选择
-//  int _currentIndex = 0;
-
   // tabBar数据B
   List<Map<String, String>> _tabBarData;
 

@@ -5,6 +5,7 @@ import 'package:flutter_yuedu/pages/member/join_member.dart';
 import 'package:flutter_yuedu/pages/member/my_account.dart';
 import 'package:flutter_yuedu/pages/setting/setting_page.dart';
 import 'package:flutter_yuedu/util/app_navigator.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class MyPage extends StatefulWidget {
@@ -38,25 +39,25 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
-      appBar: AppBar(
-        brightness: Brightness.light,
-        elevation: elevation,
-        backgroundColor: Color(0xfffefefe),
+      appBar: MyAppBar(
         actions: <Widget>[
           SizedBox(
-            width: 80,
-            height: 30,
+            width: 60,
             child: FlatButton(
-              child: Text(
-                "设置",
-                style: TextStyle(fontSize: 15),
+              padding: const EdgeInsets.all(0),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "设置",
+                  style: TextStyle(fontSize: 15, color: Color(0xff555555)),
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SettingPage()));
               },
             ),
-          )
+          ),
         ],
       ),
       body: NotificationListener<ScrollNotification>(

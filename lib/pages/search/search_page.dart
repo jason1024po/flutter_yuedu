@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xfffefefe),
+      appBar: MyAppBar(),
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: <Widget>[
-          SliverAppBar(
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Image.asset("images/main/btn_back_normal.png"),
-            ),
-            backgroundColor: Colors.white,
-            elevation: 0.3,
-            centerTitle: true,
-            expandedHeight: 100.0,
-            floating: false,
-            // 不随着滑动隐藏标题
-            pinned: true,
-            // 固定在顶部
-          ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             sliver: SliverList(

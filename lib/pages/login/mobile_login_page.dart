@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/util/regular.dart';
-import 'package:flutter_yuedu/widget/appbar_back.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
 class MobileLoginPage extends StatefulWidget {
   @override
@@ -22,12 +22,7 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Color(0xfffefefe),
-        elevation: 0,
-        leading: AppBarBack(),
-      ),
+      appBar: MyAppBar(),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());

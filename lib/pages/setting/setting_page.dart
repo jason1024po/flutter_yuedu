@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:flutter_yuedu/widget/update_version.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,19 +18,11 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).padding.top);
+
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Color(0xfffefefe),
-        elevation: 0.3,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset("images/main/btn_back_normal.png"),
-        ),
-      ),
+      appBar: MyAppBar(),
       body: ListView(
         children: _listItems(),
       ),

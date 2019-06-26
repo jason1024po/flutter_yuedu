@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/util/app_navigator.dart';
-import 'package:flutter_yuedu/widget/appbar_back.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
+
 import 'mobile_login_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -9,11 +10,9 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xfffefefe),
-        appBar: AppBar(
-            brightness: Brightness.light,
-            elevation: 0.0,
-            backgroundColor: Color(0xfffefefe),
-            leading: AppBarBack(AppBarBackType.Close)),
+        appBar: MyAppBar(
+          leadingType: AppBarBackType.Close,
+        ),
         body: Stack(
           children: <Widget>[
             Container(

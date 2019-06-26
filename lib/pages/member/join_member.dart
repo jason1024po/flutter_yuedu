@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_yuedu/widget/appbar_back.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
 const APPBAR_SCROLL_OFFSET = 160;
 
