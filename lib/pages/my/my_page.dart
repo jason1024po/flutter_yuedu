@@ -139,7 +139,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                  Color.fromARGB((255 * elevation).toInt(), 240, 240, 240),
+                  Color.fromARGB((120 * elevation).toInt(), 245, 245, 245),
                   Color.fromARGB(0, 240, 240, 240)
                 ])),
           ))
