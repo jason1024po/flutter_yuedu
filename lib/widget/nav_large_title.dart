@@ -8,7 +8,7 @@ class NavLargeTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 8),
       child: Text(_title,
           style: TextStyle(fontSize: 24, color: Color(0xff444444))),
     );

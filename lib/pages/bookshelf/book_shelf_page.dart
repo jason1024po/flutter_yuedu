@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:flutter_yuedu/widget/nav_large_title.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
@@ -79,7 +80,7 @@ class _BookShelfPageState extends State<BookShelfPage>
               ),
             ),
           ),
-          preferredSize: Size.fromHeight(kToolbarHeight + tabHeight)),
+          preferredSize: Size.fromHeight(kNavigationBarHeight + tabHeight)),
       body: TabBarView(
           controller: _tabController,
           children: tabs.map((e) {
