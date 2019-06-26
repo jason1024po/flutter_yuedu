@@ -6,9 +6,7 @@ enum AppBarBackType { Back, Close, None }
 const double kNavigationBarHeight = 44.0;
 
 // 自定义 AppBar
-class MyAppBar extends AppBar with PreferredSizeWidget {
-  @override
-  get preferredSize => Size.fromHeight(kNavigationBarHeight);
+class MyAppBar extends AppBar implements PreferredSizeWidget {
   MyAppBar(
       {Key key,
       Widget title,
@@ -30,6 +28,8 @@ class MyAppBar extends AppBar with PreferredSizeWidget {
           actions: actions,
           elevation: elevation ?? 0,
         );
+  @override
+  get preferredSize => Size.fromHeight(44);
 }
 
 // 自定义返回按钮

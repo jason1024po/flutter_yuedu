@@ -6,11 +6,11 @@ class CoursePage extends StatefulWidget {
   _CoursePageState createState() => _CoursePageState();
 }
 
-class _CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMixin {
+class _CoursePageState extends State<CoursePage>
+    with AutomaticKeepAliveClientMixin {
   // 是否加载完成
   bool _loaded = false;
   String url = "https://ke.du.youdao.com/course/goods";
-
 
   @override
   bool get wantKeepAlive => true;
@@ -19,6 +19,7 @@ class _CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
+      color: Color(0xfffefefe),
       child: Stack(
         children: <Widget>[
           WebView(
@@ -39,8 +40,12 @@ class _CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMi
           ),
           // 导航栏背景
           Positioned(
-            top:0,
-            child: Container(color: Colors.white, height: MediaQuery.of(context).padding.top, width: MediaQuery.of(context).size.width,),
+            top: 0,
+            child: Container(
+              color: Colors.white,
+              height: MediaQuery.of(context).padding.top,
+              width: MediaQuery.of(context).size.width,
+            ),
           )
         ],
       ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
@@ -34,7 +36,7 @@ List<Map<String, String>> _tabBarData = [
 ];
 
 const _tabBarIconWidth = 80.0;
-const _tabBarIconHeight = 30.0;
+const _tabBarIconHeight = 24.0;
 
 class MainPage extends StatefulWidget {
   @override
@@ -45,8 +47,6 @@ class _MainPageState extends State<MainPage> {
   final _defaultColor = Color(0xff999999);
   final _activeColor = Color(0xff666666);
 
-  // TabBar选中图片 预载入内存，避免临时点击卡顿
-  List<Image> _tabBarSelectedImages = [];
   // PageController
   final PageController _controller = PageController(
     initialPage: 0,
@@ -58,36 +58,36 @@ class _MainPageState extends State<MainPage> {
     Future.delayed(Duration(seconds: 1), () {
       FlutterSplashScreen.hide(); // 隐藏启动屏
     });
-
-    _tabBarData.forEach((item) => _tabBarSelectedImages.add(Image.asset(
-          item["selectedImage"],
-          width: _tabBarIconWidth,
-          height: _tabBarIconHeight,
-        )));
   }
 
   @override
   Widget build(BuildContext context) {
     final mainState = Provider.of<MainState>(context, listen: false);
+    final bottomBarHeight = 49 +
+        MediaQuery.of(context).padding.bottom +
+        (Platform.isAndroid ? 2 : 0);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: mainState.getTabBarSelectedIndex,
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 11,
-          unselectedFontSize: 11,
-          unselectedItemColor: _defaultColor,
-          selectedItemColor: _activeColor,
-          iconSize: 30,
-          onTap: (index) {
-            _controller.jumpToPage(index);
-            setState(() {
-              mainState.setTabBarSelectedIndex = index;
-//              _currentIndex = index;
-            });
-          },
-          items: _getTabBar()),
+      bottomNavigationBar: SizedBox(
+        height: bottomBarHeight,
+        child: BottomNavigationBar(
+            currentIndex: mainState.getTabBarSelectedIndex,
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 11,
+            unselectedFontSize: 11,
+            unselectedItemColor: _defaultColor,
+            selectedItemColor: _activeColor,
+            backgroundColor: Color(0xfffefefe),
+            elevation: 3,
+            onTap: (index) {
+              _controller.jumpToPage(index);
+              setState(() {
+                mainState.setTabBarSelectedIndex = index;
+              });
+            },
+            items: _getTabBar()),
+      ),
       body: PageView(
         controller: _controller,
         children: <Widget>[
@@ -104,18 +104,18 @@ class _MainPageState extends State<MainPage> {
   List<BottomNavigationBarItem> _getTabBar() {
     return [
       _tabBarItem(_tabBarData[0]["title"], _tabBarData[0]["image"],
-          _tabBarSelectedImages[0]),
+          _tabBarData[0]["selectedImage"]),
       _tabBarItem(_tabBarData[1]["title"], _tabBarData[1]["image"],
-          _tabBarSelectedImages[1]),
+          _tabBarData[1]["selectedImage"]),
       _tabBarItem(_tabBarData[2]["title"], _tabBarData[2]["image"],
-          _tabBarSelectedImages[2]),
+          _tabBarData[2]["selectedImage"]),
       _tabBarMessageBadgeItem(_tabBarData[3]["title"], _tabBarData[3]["image"],
-          _tabBarSelectedImages[3])
+          _tabBarData[3]["selectedImage"])
     ];
   }
 
   BottomNavigationBarItem _tabBarItem(
-      String title, String image, Image selectedImage) {
+      String title, String image, String selectedImage) {
     return BottomNavigationBarItem(
         icon: Stack(
           children: <Widget>[
@@ -126,16 +126,16 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        activeIcon: Stack(
-          children: <Widget>[
-            selectedImage,
-          ],
+        activeIcon: Image.asset(
+          selectedImage,
+          width: _tabBarIconWidth,
+          height: _tabBarIconHeight,
         ),
         title: Text(title));
   }
 
   BottomNavigationBarItem _tabBarMessageBadgeItem(
-      String title, String image, Image selectedImage) {
+      String title, String image, String selectedImage) {
     var badgeIcon = Positioned(
       left: _tabBarIconWidth / 2 + 6,
       child: Consumer<MainState>(
@@ -175,7 +175,14 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
         activeIcon: Stack(
-          children: <Widget>[selectedImage, badgeIcon],
+          children: <Widget>[
+            Image.asset(
+              selectedImage,
+              width: _tabBarIconWidth,
+              height: _tabBarIconHeight,
+            ),
+            badgeIcon
+          ],
         ),
         title: Text(title));
   }
