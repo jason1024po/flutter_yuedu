@@ -40,6 +40,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
       appBar: MyAppBar(
+        leadingType: AppBarBackType.None,
         actions: <Widget>[
           SizedBox(
             width: 60,
@@ -60,79 +61,98 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
           ),
         ],
       ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollNotification) {
-          if (scrollNotification is ScrollUpdateNotification)
-            _onScroll(scrollNotification.metrics.pixels);
-          return true;
-        },
-        child: ListView(
-          children: <Widget>[
-            GestureDetector(
-                onTap: () {
-                  AppNavigator.present(context, LoginPage());
+      body: Stack(
+        children: <Widget>[
+          NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollNotification) {
+              if (scrollNotification is ScrollUpdateNotification)
+                _onScroll(scrollNotification.metrics.pixels);
+              return true;
+            },
+            child: ListView(
+              children: <Widget>[
+                GestureDetector(
+                    onTap: () {
+                      AppNavigator.present(context, LoginPage());
 //                  Navigator.of(context).pushNamed('/login');
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
-                  height: 90,
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        top: 18,
-                        child: Text(
-                          "立即登录",
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff444444)),
-                        ),
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 24, right: 24),
+                      height: 90,
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                            top: 18,
+                            child: Text(
+                              "立即登录",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff444444)),
+                            ),
+                          ),
+                          Positioned(top: 55, child: Text("每天都要看书哟~")),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Image.asset(
+                              "images/usercenter/usercenter_unlogin_header.png",
+                              height: 90,
+                            ),
+                          )
+                        ],
                       ),
-                      Positioned(top: 55, child: Text("每天都要看书哟~")),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Image.asset(
-                          "images/usercenter/usercenter_unlogin_header.png",
-                          height: 90,
-                        ),
-                      )
-                    ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 20, left: 12, right: 12),
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    children: _getCardItems(),
                   ),
-                )),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 20, bottom: 20, left: 12, right: 12),
-              child: Flex(
-                direction: Axis.horizontal,
-                children: _getCardItems(),
-              ),
+                ),
+                _getListItem(
+                    "我的成就", "images/usercenter/icon_setting_medal.png"),
+                Divider(
+                  indent: 20,
+                  height: 0.5,
+                ),
+                _getListItem(
+                    "兴趣选择", "images/usercenter/usercenter_interest.png"),
+                Divider(
+                  indent: 20,
+                  height: 0.5,
+                ),
+                _getListItem("阅读报告", "images/usercenter/usercenter_report.png"),
+                Divider(
+                  indent: 20,
+                  height: 0.5,
+                ),
+              ],
             ),
-            _getListItem("我的成就", "images/usercenter/icon_setting_medal.png"),
-            Divider(
-              indent: 20,
-              height: 0.5,
-            ),
-            _getListItem("兴趣选择", "images/usercenter/usercenter_interest.png"),
-            Divider(
-              indent: 20,
-              height: 0.5,
-            ),
-            _getListItem("阅读报告", "images/usercenter/usercenter_report.png"),
-            Divider(
-              indent: 20,
-              height: 0.5,
-            ),
-          ],
-        ),
+          ),
+          Positioned(
+              child: Container(
+            height: 5,
+            decoration: BoxDecoration(
+                color: Colors.red,
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromARGB((255 * elevation).toInt(), 240, 240, 240),
+                      Color.fromARGB(0, 240, 240, 240)
+                    ])),
+          ))
+        ],
       ),
     );
   }
 
   _onScroll(offset) {
-    var result = offset / 100.0;
-    if (result > 0.3) {
-      result = 0.3;
+    var result = offset / 50.0;
+    if (result > 1.0) {
+      result = 1.0;
     } else if (result < 0) {
       result = 0.0;
     }

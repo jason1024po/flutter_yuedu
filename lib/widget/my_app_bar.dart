@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// appbar 返回按钮类型
-enum AppBarBackType { Back, Close }
+enum AppBarBackType { Back, Close, None }
 
 // 自定义 AppBar
 class MyAppBar extends AppBar with PreferredSizeWidget {
@@ -21,7 +21,10 @@ class MyAppBar extends AppBar with PreferredSizeWidget {
           title: title,
           brightness: brightness ?? Brightness.light,
           backgroundColor: backgroundColor ?? Color(0xfffefefe),
-          leading: leading ?? AppBarBack(leadingType ?? AppBarBackType.Back),
+          leading: leading ??
+              (leadingType == AppBarBackType.None
+                  ? null
+                  : AppBarBack(leadingType ?? AppBarBackType.Back)),
           actions: actions,
           elevation: elevation ?? 0,
         );
