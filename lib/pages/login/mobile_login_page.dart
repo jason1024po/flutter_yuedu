@@ -107,6 +107,7 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
         cursorColor: Colors.amber,
         keyboardAppearance: Brightness.light,
         onChanged: _mobileTextChange,
+        autofocus: true,
         decoration: InputDecoration(
             border: InputBorder.none,
             hintText: "请输入手机号码",
