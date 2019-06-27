@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/pages/login/login_page.dart';
-import 'package:flutter_yuedu/pages/main/main_state.dart';
+import 'package:flutter_yuedu/pages/main/main_provider.dart';
 import 'package:flutter_yuedu/pages/member/join_member.dart';
 import 'package:flutter_yuedu/pages/member/my_account.dart';
 import 'package:flutter_yuedu/pages/setting/setting_page.dart';
-import 'package:flutter_yuedu/util/app_navigator.dart';
+import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +31,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(milliseconds: 500), () {
-      final mainState = Provider.of<MainState>(context, listen: false);
+      final mainState = Provider.of<MainProvider>(context, listen: false);
       if (mainState.getTabBarSelectedIndex == 3) {
         mainState.cleanMessage();
       }
@@ -73,7 +73,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
               children: <Widget>[
                 GestureDetector(
                     onTap: () {
-                      AppNavigator.present(context, LoginPage());
+                      MyNavigator.present(context, LoginPage());
 //                  Navigator.of(context).pushNamed('/login');
                     },
                     child: Container(
@@ -175,10 +175,10 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     ];
     return [
       _getCardItem(data[0], () {
-        AppNavigator.push(context, MyAccount());
+        MyNavigator.push(context, MyAccount());
       }),
       _getCardItem(data[1], () {
-        AppNavigator.push(context, JoinMember());
+        MyNavigator.push(context, JoinMember());
       })
     ];
   }

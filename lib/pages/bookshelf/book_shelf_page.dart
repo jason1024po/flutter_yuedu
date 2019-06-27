@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/pages/login/login_page.dart';
+import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:flutter_yuedu/widget/nav_large_title.dart';
 import 'package:underline_indicator/underline_indicator.dart';
@@ -109,7 +111,9 @@ class UnLoginWidget extends StatelessWidget {
                   width: 230,
                   height: 44,
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      MyNavigator.present(context, LoginPage());
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(44.0)),
                     child: Text(

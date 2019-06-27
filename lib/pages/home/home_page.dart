@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_yuedu/pages/login/login_page.dart';
 import 'package:flutter_yuedu/pages/search/search_page.dart';
+import 'package:provider/provider.dart';
 
 import 'home_dropdown.dart';
+import 'home_provider.dart';
 
 class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
-  final _bannerList = [
-    "http://ydschool-online.nos.netease.com/rs_88874c6f89ec48c996ea289ed4bb952e.jpg",
-    "http://ydschool-online.nos.netease.com/rs_9ad9ee7ddc9643a79ef6f3456c3c0e9f.jpg",
-    "http://ydschool-online.nos.netease.com/rs_a661796665db47b29f3167c8e43635ef.jpg",
-    "http://ydschool-online.nos.netease.com/rs_af7ba6d4206945ba9357b4863fb569a9.jpg",
-    "http://ydschool-online.nos.netease.com/rs_b44ba0d8f01e48439dae9c2d22a41b20.jpg",
-  ];
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +105,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   }
 
   Future<Null> _handleRefresh() async {
-    await Future.delayed(Duration(seconds: 3), () {
-      print('refresh');
-      setState(() {
-        return null;
-      });
-    });
+    Provider.of<HomeProvider>(context).fetchData();
   }
 
   Widget _listView() {
@@ -302,6 +297,17 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
   // banner
   Widget _banner() {
+    final _size = MediaQuery.of(context).size;
+    // 横竖屏返回不同 widget 解决 Swiper 横竖屏切换的 bug
+    if (_size.width > _size.height) {
+      return _getSwiper();
+    }
+    return Container(
+      child: _getSwiper(),
+    );
+  }
+
+  Widget _getSwiper() {
     final screenWidth = MediaQuery.of(context).size.width * 1.0;
 
     final fraction = (375.0 / screenWidth * 100).toInt() * 0.9 / 100;
@@ -309,42 +315,44 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     return Container(
       margin: EdgeInsets.only(top: 5),
       height: 150,
-      child: Swiper(
-        viewportFraction: fraction,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: Padding(
-                padding: EdgeInsets.only(left: 6, right: 6),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: CachedNetworkImage(
-                    imageUrl: _bannerList[index],
-                  ),
-                )),
-          );
-        },
-        itemCount: _bannerList.length,
-      ),
+      child: Consumer<HomeProvider>(builder: (context, state, child) {
+        return state.bannerList.length > 0
+            ? Swiper(
+                viewportFraction: fraction,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 6, right: 6),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: CachedNetworkImage(
+                            imageUrl: state.bannerList[index],
+                          ),
+                        )),
+                  );
+                },
+                itemCount: state.bannerList.length,
+              )
+            : Container(
+                height: 150,
+              );
+      }),
     );
   }
 
   // 菜单
   Widget _iconMenu() {
     return Container(
+      height: 80,
       margin: EdgeInsets.only(top: 12, bottom: 12),
       padding: EdgeInsets.only(left: 10, right: 10),
-      child: Flex(
-        direction: Axis.horizontal,
-        children: <Widget>[
-          _menuItem("新书推荐",
-              "http://ydschool-online.nos.netease.com/rs_2b62310272c74032a89795fa352dda8f.jpg"),
-          _menuItem("必读书单",
-              "http://ydschool-online.nos.netease.com/rs_20d90f4d82bb4e22b5ea9ffd56a0317f.jpg"),
-          _menuItem("免费上课",
-              "http://ydschool-online.nos.netease.com/rs_f2ca49a136e743ae99bafa3de585a9ee.jpg"),
-          _menuItem("阅读顾问",
-              "http://ydschool-online.nos.netease.com/rs_1c09cc90f5504e228888eb01cb99f0db.jpg"),
-        ],
+      child: Consumer<HomeProvider>(
+        builder: (_, state, child) => Flex(
+              direction: Axis.horizontal,
+              children: state.quickEntrances
+                  .map((item) => _menuItem(item["title"], item["imageUrl"]))
+                  .toList(),
+            ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_yuedu/util/app_navigator.dart';
+import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
 import 'mobile_login_page.dart';
@@ -37,8 +37,7 @@ class LoginPage extends StatelessWidget {
                       right: 0,
                       child: Image.asset(
                         "images/login/login_tail.png",
-                        height: 159,
-                        width: double.infinity,
+                        fit: BoxFit.fitWidth,
                       )),
                   Center(
                     child: Container(
@@ -122,6 +121,6 @@ class LoginPage extends StatelessWidget {
   }
 
   _mobileLoginButtonTap(BuildContext context) {
-    AppNavigator.push(context, MobileLoginPage());
+    MyNavigator.push(context, MobileLoginPage());
   }
 }

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class MainState with ChangeNotifier {
-  MainState() {
+class MainProvider with ChangeNotifier {
+  MainProvider() {
     fetchMessage();
     fetchConfig();
   }

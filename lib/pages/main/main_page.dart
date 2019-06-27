@@ -9,7 +9,7 @@ import 'package:flutter_yuedu/pages/home/home_page.dart';
 import 'package:flutter_yuedu/pages/my/my_page.dart';
 import 'package:provider/provider.dart';
 
-import 'main_state.dart';
+import 'main_provider.dart';
 
 // tabBar数据B
 List<Map<String, String>> _tabBarData = [
@@ -59,7 +59,7 @@ class _MainPageState extends State<MainPage> {
     final bottomBarHeight = 49 +
         MediaQuery.of(context).padding.bottom +
         (Platform.isAndroid ? 2 : 0);
-    final mainState = Provider.of<MainState>(context, listen: false);
+    final mainState = Provider.of<MainProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
       bottomNavigationBar: SizedBox(
@@ -82,7 +82,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   /// bottomNavBar
-  _getBottomNavigationBar(MainState mainState) {
+  _getBottomNavigationBar(MainProvider mainState) {
     return BottomNavigationBar(
         currentIndex: mainState.getTabBarSelectedIndex,
         type: BottomNavigationBarType.fixed,
@@ -156,8 +156,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   _getBadge() {
-    return Consumer<MainState>(
-      builder: (context, MainState state, child) => Opacity(
+    return Consumer<MainProvider>(
+      builder: (context, MainProvider state, child) => Opacity(
             opacity: state.isMessageCount ? 1 : 0,
             child: Container(
               decoration: BoxDecoration(
@@ -173,7 +173,7 @@ class _MainPageState extends State<MainPage> {
                 child: Center(
                   child: Text(
                     state.getMessageCount,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white, fontSize: 10.5),
                   ),
                 ),
               ),
