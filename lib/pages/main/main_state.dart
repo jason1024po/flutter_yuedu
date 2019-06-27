@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class MainState with ChangeNotifier {
   MainState() {
     fetchMessage();
+    fetchConfig();
   }
   int _messageCount = 0;
 
@@ -12,6 +16,10 @@ class MainState with ChangeNotifier {
   set setTabBarSelectedIndex(int value) {
     _tabBarSelectedIndex = value;
   }
+
+  // 课程 url
+  String _courseUrl;
+  String get courseUrl => _courseUrl;
 
   // 处理后显示的消息
   String get getMessageCount =>
@@ -24,11 +32,22 @@ class MainState with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> fetchConfig() async {
+    var response =
+        await http.get("https://api-yread-online.du.youdao.com/app/conf");
+    var result = json.decode(response.body);
+    _courseUrl = result["body"]["config"]["courseUrl"];
+  }
+
   // 获取消息数据
   Future<void> fetchMessage() async {
     print("开始获取未读消息");
     Future.delayed(const Duration(seconds: 6), () {
       _messageCount = 12;
+      notifyListeners();
+    });
+    Future.delayed(const Duration(seconds: 10), () {
+      _messageCount = 100;
       notifyListeners();
     });
     Future.delayed(const Duration(seconds: 17), () {

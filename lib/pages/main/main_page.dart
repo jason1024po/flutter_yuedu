@@ -35,18 +35,12 @@ List<Map<String, String>> _tabBarData = [
   },
 ];
 
-const _tabBarIconWidth = 80.0;
-const _tabBarIconHeight = 24.0;
-
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  final _defaultColor = Color(0xff999999);
-  final _activeColor = Color(0xff666666);
-
   // PageController
   final PageController _controller = PageController(
     initialPage: 0,
@@ -62,37 +56,23 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final mainState = Provider.of<MainState>(context, listen: false);
     final bottomBarHeight = 49 +
         MediaQuery.of(context).padding.bottom +
         (Platform.isAndroid ? 2 : 0);
-
+    final mainState = Provider.of<MainState>(context, listen: false);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xfffefefe),
       bottomNavigationBar: SizedBox(
         height: bottomBarHeight,
-        child: BottomNavigationBar(
-            currentIndex: mainState.getTabBarSelectedIndex,
-            type: BottomNavigationBarType.fixed,
-            selectedFontSize: 11,
-            unselectedFontSize: 11,
-            unselectedItemColor: _defaultColor,
-            selectedItemColor: _activeColor,
-            backgroundColor: Color(0xfffefefe),
-            elevation: 3,
-            onTap: (index) {
-              _controller.jumpToPage(index);
-              setState(() {
-                mainState.setTabBarSelectedIndex = index;
-              });
-            },
-            items: _getTabBar()),
+        child: _getBottomNavigationBar(mainState),
       ),
       body: PageView(
         controller: _controller,
         children: <Widget>[
           HomePage(),
-          CoursePage(),
+          CoursePage(
+            url: mainState.courseUrl,
+          ),
           BookShelfPage(),
           MyPage(),
         ],
@@ -101,78 +81,62 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  /// bottomNavBar
+  _getBottomNavigationBar(MainState mainState) {
+    return BottomNavigationBar(
+        currentIndex: mainState.getTabBarSelectedIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 11,
+        unselectedFontSize: 11,
+        unselectedItemColor: Color(0xff999999),
+        selectedItemColor: Color(0xff666666),
+        backgroundColor: Color(0xfffefefe),
+        elevation: 1,
+        onTap: (index) {
+          _controller.jumpToPage(index);
+          setState(() {
+            mainState.setTabBarSelectedIndex = index;
+          });
+        },
+        items: _getTabBar());
+  }
+
   List<BottomNavigationBarItem> _getTabBar() {
     return [
-      _tabBarItem(_tabBarData[0]["title"], _tabBarData[0]["image"],
+      _getBottomBarItem(_tabBarData[0]["title"], _tabBarData[0]["image"],
           _tabBarData[0]["selectedImage"]),
-      _tabBarItem(_tabBarData[1]["title"], _tabBarData[1]["image"],
+      _getBottomBarItem(_tabBarData[1]["title"], _tabBarData[1]["image"],
           _tabBarData[1]["selectedImage"]),
-      _tabBarItem(_tabBarData[2]["title"], _tabBarData[2]["image"],
+      _getBottomBarItem(_tabBarData[2]["title"], _tabBarData[2]["image"],
           _tabBarData[2]["selectedImage"]),
-      _tabBarMessageBadgeItem(_tabBarData[3]["title"], _tabBarData[3]["image"],
-          _tabBarData[3]["selectedImage"])
+      _getBottomBarItem(_tabBarData[3]["title"], _tabBarData[3]["image"],
+          _tabBarData[3]["selectedImage"], _getBadge())
     ];
   }
 
-  BottomNavigationBarItem _tabBarItem(
-      String title, String image, String selectedImage) {
-    return BottomNavigationBarItem(
-        icon: Stack(
-          children: <Widget>[
-            Image.asset(
-              image,
-              width: _tabBarIconWidth,
-              height: _tabBarIconHeight,
-            ),
-          ],
-        ),
-        activeIcon: Image.asset(
-          selectedImage,
-          width: _tabBarIconWidth,
-          height: _tabBarIconHeight,
-        ),
-        title: Text(title));
-  }
+  BottomNavigationBarItem _getBottomBarItem(
+      String title, String image, String selectedImage,
+      [Widget badge]) {
+    const _tabBarIconWidth = 100.0;
+    const _tabBarIconHeight = 22.0;
 
-  BottomNavigationBarItem _tabBarMessageBadgeItem(
-      String title, String image, String selectedImage) {
-    var badgeIcon = Positioned(
-      left: _tabBarIconWidth / 2 + 6,
-      child: Consumer<MainState>(
-        builder: (context, MainState state, child) => Opacity(
-              opacity: state.isMessageCount ? 1 : 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color(0xfff8d949),
-                ),
-                height: 18,
-                padding: const EdgeInsets.only(left: 6, right: 6),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: 6,
-                  ),
-                  child: Center(
-                    child: Text(
-                      state.getMessageCount,
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-      ),
+    final _badge = Positioned(
+      left: _tabBarIconWidth / 2 + 5,
+      child: badge ?? Container(),
     );
+
     return BottomNavigationBarItem(
-        icon: Stack(
-          children: <Widget>[
-            Image.asset(
-              image,
-              width: _tabBarIconWidth,
-              height: _tabBarIconHeight,
-            ),
-            badgeIcon,
-          ],
+        icon: Container(
+          child: Stack(
+            children: <Widget>[
+              Image.asset(
+                image,
+                width: _tabBarIconWidth,
+                height: _tabBarIconHeight,
+              ),
+              _badge,
+            ],
+          ),
         ),
         activeIcon: Stack(
           children: <Widget>[
@@ -181,9 +145,40 @@ class _MainPageState extends State<MainPage> {
               width: _tabBarIconWidth,
               height: _tabBarIconHeight,
             ),
-            badgeIcon
+            _badge
           ],
         ),
-        title: Text(title));
+        title: Container(
+          height: 16,
+          alignment: Alignment.bottomCenter,
+          child: Text(title),
+        ));
+  }
+
+  _getBadge() {
+    return Consumer<MainState>(
+      builder: (context, MainState state, child) => Opacity(
+            opacity: state.isMessageCount ? 1 : 0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Color(0xfff8d949),
+              ),
+              height: 18,
+              padding: const EdgeInsets.only(left: 6, right: 6),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 6,
+                ),
+                child: Center(
+                  child: Text(
+                    state.getMessageCount,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
   }
 }

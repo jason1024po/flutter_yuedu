@@ -78,6 +78,7 @@ flutter:
     - images/setting/usercenter_feedback.png
     - images/setting/setting_about.png
     - images/setting/setting_update.png
+    - images/setting/setting_version.png
     - images/bookshelf/bg_bookshelf_empty.png
     - images/login/login_header.png
     - images/login/login_tail.png

@@ -52,10 +52,10 @@ class _SettingPageState extends State<SettingPage> {
                 _goToSystemSetting();
               })),
       _getListItem("用户反馈", "images/setting/usercenter_feedback.png"),
-      _getListItem("系统更新", "images/setting/setting_update.png", null, () {
+      _getListItem("系统更新", "images/setting/setting_version.png", null, () {
         _updateVersionHandle();
       }),
-      _getListItem("关于我们", "images/setting/setting_about.png"),
+      _getListItem("关于我们", "images/setting/setting_about.png", Text("v1.0.0")),
     ];
   }
 

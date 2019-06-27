@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CoursePage extends StatefulWidget {
+  final String url;
+
+  const CoursePage({Key key, this.url}) : super(key: key);
+
   @override
   _CoursePageState createState() => _CoursePageState();
 }
@@ -10,7 +14,6 @@ class _CoursePageState extends State<CoursePage>
     with AutomaticKeepAliveClientMixin {
   // 是否加载完成
   bool _loaded = false;
-  String url = "https://ke.du.youdao.com/course/goods";
 
   @override
   bool get wantKeepAlive => true;
@@ -28,7 +31,7 @@ class _CoursePageState extends State<CoursePage>
                 _loaded = true;
               });
             },
-            initialUrl: url,
+            initialUrl: widget.url,
             javascriptMode: JavascriptMode.unrestricted,
           ),
           // loading

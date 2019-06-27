@@ -13,7 +13,7 @@ class _JoinMemberState extends State<JoinMember> {
 
   @override
   Widget build(BuildContext context) {
-    double _paddingTop = MediaQuery.of(context).padding.top;
+    final _mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Color(0xfff7f7f8),
       body: Stack(
@@ -22,7 +22,8 @@ class _JoinMemberState extends State<JoinMember> {
             top: -_appBarAlpha * APPBAR_SCROLL_OFFSET,
             child: Image.asset(
               "images/member/member_background.png",
-              fit: BoxFit.contain,
+              fit: BoxFit.fitWidth,
+              width: _mediaQuery.size.width,
             ),
           ),
           NotificationListener(
@@ -74,8 +75,8 @@ class _JoinMemberState extends State<JoinMember> {
               removeBottom: true,
               context: context,
               child: Container(
-                height: kNavigationBarHeight + _paddingTop,
-                padding: EdgeInsets.only(top: _paddingTop),
+                height: kNavigationBarHeight + _mediaQuery.padding.top,
+                padding: EdgeInsets.only(top: _mediaQuery.padding.top),
                 color:
                     Color.fromARGB((_appBarAlpha * 255).toInt(), 255, 255, 255),
                 child: MyAppBar(
@@ -83,7 +84,7 @@ class _JoinMemberState extends State<JoinMember> {
                 ),
               )),
           Positioned(
-              top: kNavigationBarHeight + _paddingTop,
+              top: kNavigationBarHeight + _mediaQuery.padding.top,
               left: 0,
               right: 0,
               child: Container(
@@ -99,8 +100,8 @@ class _JoinMemberState extends State<JoinMember> {
                     ])),
               )),
           Positioned(
-              right: 18,
-              bottom: MediaQuery.of(context).padding.bottom + 20,
+              right: 16,
+              bottom: _mediaQuery.padding.bottom + 30,
               child: Image.asset("images/member/member_sales_sprite.png"))
         ],
       ),
