@@ -73,6 +73,7 @@ flutter:
     - images/main/btn_back_normal.png
     - images/main/parentveri_close.png
     - images/main/main_more_arrow.png
+    - images/main/main_section_play.png
     - images/setting/icon_setting_cache.png
     - images/setting/icon_setting_push.png
     - images/setting/usercenter_feedback.png

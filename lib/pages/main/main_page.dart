@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
         unselectedItemColor: Color(0xff999999),
         selectedItemColor: Color(0xff666666),
         backgroundColor: Color(0xfffefefe),
-        elevation: 1,
+        elevation: 2,
         onTap: (index) {
           _controller.jumpToPage(index);
           setState(() {

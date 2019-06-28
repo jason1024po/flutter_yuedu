@@ -11,6 +11,8 @@ class HomeProvider with ChangeNotifier {
   List<String> bannerList = [];
   List<Map<String, String>> quickEntrances = [];
 
+  List<Map<String, Object>> data = [];
+
   HomeProvider() {
     fetchData();
   }
@@ -20,6 +22,8 @@ class HomeProvider with ChangeNotifier {
     var result = json.decode(response.body);
 
     final _modules = result["body"]["page"]["modules"];
+    data = List.from(_modules);
+
     // banner
     bannerList = [];
     final _banners = _modules[0]["payload"]["banners"];
