@@ -33,6 +33,7 @@ dependencies:
   http: ^0.12.0+2
   provider: ^3.0.0+1
   toast: ^0.1.3
+  package_info: ^0.4.0+4
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,7 @@ flutter:
     - images/setting/setting_about.png
     - images/setting/setting_update.png
     - images/setting/setting_version.png
+    - images/setting/about_logo.png
     - images/bookshelf/bg_bookshelf_empty.png
     - images/login/login_header.png
     - images/login/login_tail.png

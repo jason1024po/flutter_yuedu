@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:flutter_yuedu/widget/update_version.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'about_page.dart';
 
 typedef itemTapCallback = void Function();
 
@@ -55,7 +58,9 @@ class _SettingPageState extends State<SettingPage> {
       _getListItem("系统更新", "images/setting/setting_version.png", null, () {
         _updateVersionHandle();
       }),
-      _getListItem("关于我们", "images/setting/setting_about.png", Text("v1.0.0")),
+      _getListItem("关于我们", "images/setting/setting_about.png", null, () {
+        MyNavigator.push(context, AboutPage());
+      }),
     ];
   }
 
@@ -84,11 +89,11 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _getListItem(String title, String icon,
-      [Widget trailing, itemTapCallback]) {
+      [Widget trailing, GestureTapCallback tapCallBack]) {
     return SizedBox(
       height: 80,
       child: ListTile(
-        onTap: itemTapCallback,
+        onTap: tapCallBack,
         title: Align(
           alignment: Alignment.centerLeft,
           child: Row(

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import 'home_provider.dart';
 
@@ -170,7 +169,6 @@ class HomeNormalBook extends StatelessWidget {
             childAspectRatio: 0.64),
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
-            print(index);
             return _item(index, context);
           },
           childCount: data.length,
@@ -202,8 +200,7 @@ class HomeNormalBook extends StatelessWidget {
 //                      width: 50,
                       color: Color(0xfffbfbfb),
                       child: CachedNetworkImage(
-                        fadeOutDuration: Duration(milliseconds: 100),
-                        placeholder: (_, __) => Image.memory(kTransparentImage),
+                        useOldImageOnUrlChange: true,
                         imageUrl: data[index]["coverImageUrl"],
                         width: double.infinity,
                         fit: BoxFit.fitWidth,
@@ -396,7 +393,7 @@ class HomeSeries extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(22, 0, 22, 0),
       sliver: SliverGrid(
         //Grid
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: (screenSize.width > screenSize.height) ? 4 : 2,
             mainAxisSpacing: 18.0,
             crossAxisSpacing: 15.0,
@@ -419,8 +416,8 @@ class HomeSeries extends StatelessWidget {
                   child: Container(
 //                      width: 100,
                       color: Color(0xfffbfbfb),
-                      child: Image.network(
-                        data[index]["imageUrl"],
+                      child: CachedNetworkImage(
+                        imageUrl: data[index]["imageUrl"],
                         fit: BoxFit.cover,
                       )),
                 ),
