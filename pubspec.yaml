@@ -26,6 +26,7 @@ dependencies:
   url_launcher: ^5.0.2
   webview_flutter: ^0.3.9+1
   flutter_swiper: ^1.1.6
+  transparent_image: ^1.0.0
   cached_network_image: ^0.8.0
   flutter_splash_screen: ^0.1.0
   underline_indicator: ^0.0.2

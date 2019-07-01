@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'home_provider.dart';
 
@@ -164,11 +165,12 @@ class HomeNormalBook extends StatelessWidget {
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: (screenSize.width > screenSize.height) ? 6 : 3,
-            mainAxisSpacing: 12.0,
-            crossAxisSpacing: 18.0,
-            childAspectRatio: 0.65),
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+            childAspectRatio: 0.64),
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
+            print(index);
             return _item(index, context);
           },
           childCount: data.length,
@@ -200,6 +202,8 @@ class HomeNormalBook extends StatelessWidget {
 //                      width: 50,
                       color: Color(0xfffbfbfb),
                       child: CachedNetworkImage(
+                        fadeOutDuration: Duration(milliseconds: 100),
+                        placeholder: (_, __) => Image.memory(kTransparentImage),
                         imageUrl: data[index]["coverImageUrl"],
                         width: double.infinity,
                         fit: BoxFit.fitWidth,
