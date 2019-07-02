@@ -7,8 +7,19 @@ import 'home_provider.dart';
 
 /// banner
 class HomeBanner extends StatelessWidget {
+  final List<Map<String, Object>> data;
+
+  HomeBanner(this.data);
+
   @override
   Widget build(BuildContext context) {
+    if (data.length == 0) {
+      return Container(
+        margin: EdgeInsets.only(top: 5),
+        height: 150,
+      );
+    }
+
     final _size = MediaQuery.of(context).size;
     // 横竖屏返回不同 widget 解决 Swiper 横竖屏切换的 bug
     if (_size.width > _size.height) {
@@ -28,26 +39,22 @@ class HomeBanner extends StatelessWidget {
       margin: EdgeInsets.only(top: 5),
       height: 150,
       child: Consumer<HomeProvider>(builder: (context, state, child) {
-        return state.bannerList.length > 0
-            ? Swiper(
-                viewportFraction: fraction,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 6, right: 6),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12.0),
-                          child: CachedNetworkImage(
-                            imageUrl: state.bannerList[index],
-                          ),
-                        )),
-                  );
-                },
-                itemCount: state.bannerList.length,
-              )
-            : Container(
-                height: 150,
-              );
+        return Swiper(
+          viewportFraction: fraction,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 6, right: 6),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: CachedNetworkImage(
+                      imageUrl: data[index]["imageUrl"],
+                    ),
+                  )),
+            );
+          },
+          itemCount: data.length,
+        );
       }),
     );
   }
@@ -55,19 +62,19 @@ class HomeBanner extends StatelessWidget {
 
 /// icon 导航
 class HomeQuickEntrance extends StatelessWidget {
+  final List<Map<String, Object>> data;
+
+  HomeQuickEntrance(this.data);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-//      margin: EdgeInsets.only(top: 12, bottom: 12),
-//      padding: EdgeInsets.only(left: 10, right: 10),
-      child: Consumer<HomeProvider>(
-        builder: (_, state, child) => Flex(
-              direction: Axis.horizontal,
-              children: state.quickEntrances
-                  .map((item) => _menuItem(item["title"], item["imageUrl"]))
-                  .toList(),
-            ),
+      child: Flex(
+        direction: Axis.horizontal,
+        children: data
+            .map((item) => _menuItem(item["title"], item["imageUrl"]))
+            .toList(),
       ),
     );
   }

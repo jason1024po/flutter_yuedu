@@ -130,14 +130,15 @@ class _HomePageState extends State<HomePage>
       switch (type) {
         case "BANNER":
           return SliverToBoxAdapter(
-            child: HomeBanner(),
+            child: HomeBanner(List.from(payload["banners"] ?? [])),
           );
         case "QUICK_ENTRANCE":
           return SliverToBoxAdapter(
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
-              child: HomeQuickEntrance(),
+              child:
+                  HomeQuickEntrance(List.from(payload["quickEntrances"] ?? [])),
             ),
           );
         case "HEADER":

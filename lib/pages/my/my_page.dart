@@ -239,7 +239,9 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
       height: 80,
       child: ListTile(
         contentPadding: EdgeInsets.only(left: 20),
-        onTap: () {},
+        onTap: () {
+          MyNavigator.present(context, LoginPage());
+        },
         title: Align(
           alignment: Alignment.centerLeft,
           child: Row(

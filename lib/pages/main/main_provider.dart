@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_yuedu/api/http.dart';
 
 class MainProvider with ChangeNotifier {
   MainProvider() {
@@ -33,10 +31,8 @@ class MainProvider with ChangeNotifier {
   }
 
   Future<void> fetchConfig() async {
-    var response =
-        await http.get("https://api-yread-online.du.youdao.com/app/conf");
-    var result = json.decode(response.body);
-    _courseUrl = result["body"]["config"]["courseUrl"];
+    var res = await Http.get("app/conf", version: "");
+    _courseUrl = res.data["config"]["courseUrl"];
   }
 
   // 获取消息数据
