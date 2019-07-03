@@ -33,10 +33,10 @@ class KeyValueStore {
     return KeyValueStoreItem.fromJson(Map.from(list.first));
   }
 
+  /// getDB
   static Future<Database> _getDB() async {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, _dbName);
-    print(databasesPath);
     return openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       print("----初始化数据表:" + databasesPath);

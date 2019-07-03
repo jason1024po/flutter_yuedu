@@ -22,6 +22,7 @@ class _CoursePageState extends State<CoursePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       color: Color(0xfffefefe),
       child: Stack(
         children: <Widget>[
@@ -41,15 +42,6 @@ class _CoursePageState extends State<CoursePage>
               child: _getLoadingDialog(),
             ),
           ),
-          // 导航栏背景
-          Positioned(
-            top: 0,
-            child: Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).padding.top,
-              width: MediaQuery.of(context).size.width,
-            ),
-          )
         ],
       ),
     );

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/api/http.dart';
+import 'package:flutter_yuedu/sqlite/sqlite.dart';
+
+const URL = "app/conf";
 
 class MainProvider with ChangeNotifier {
   MainProvider() {
@@ -31,8 +34,15 @@ class MainProvider with ChangeNotifier {
   }
 
   Future<void> fetchConfig() async {
-    var res = await Http.get("app/conf", version: "");
-    _courseUrl = res.data["config"]["courseUrl"];
+    KeyValueStore.get(URL).then((item) {
+      print("缓存 url:" + item.content.toString());
+      _courseUrl = item.content.toString();
+    });
+
+    Http.get(URL, version: "").then((res) {
+      _courseUrl = res.data["config"]["courseUrl"];
+      KeyValueStore.add(URL, _courseUrl);
+    });
   }
 
   // 获取消息数据
