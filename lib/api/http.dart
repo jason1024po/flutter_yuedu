@@ -11,6 +11,10 @@ class Http {
     var response = await http.get(Api(url, version: version).toString());
     var result = json.decode(response.body);
 
+    if (response.statusCode != 200) {
+      throw Exception(result);
+    }
+
     return Response(result["code"], result["message"], result["body"]);
   }
 
@@ -26,6 +30,8 @@ class Http {
 class Response {
   int code;
   String message;
+  bool isCache;
+  Duration cacheTime;
   dynamic data;
 
   Response(this.code, this.message, this.data);
