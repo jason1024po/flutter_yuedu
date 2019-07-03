@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/api/http.dart';
 import 'package:flutter_yuedu/sqlite/sqlite.dart';
+import 'package:oktoast/oktoast.dart';
 
 const URL = "app/index";
 
@@ -29,6 +30,7 @@ class HomeProvider with ChangeNotifier {
       notifyListeners();
       KeyValueStore.add(URL, modules);
     }).catchError((error) {
+      showToast("网络错误");
       print(error);
     });
   }

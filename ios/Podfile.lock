@@ -2,6 +2,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_splash_screen (0.0.1):
     - Flutter
+  - flutter_webview_plugin (0.0.1):
+    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -20,6 +22,7 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_splash_screen (from `.symlinks/plugins/flutter_splash_screen/ios`)
+  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -35,6 +38,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/flutter/ios"
   flutter_splash_screen:
     :path: ".symlinks/plugins/flutter_splash_screen/ios"
+  flutter_webview_plugin:
+    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
@@ -49,6 +54,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   flutter_splash_screen: 0323a1080aa7853a0f0af4491dc29d034be61746
+  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
