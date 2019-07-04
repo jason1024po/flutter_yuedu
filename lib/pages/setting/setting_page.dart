@@ -83,7 +83,12 @@ class _SettingPageState extends State<SettingPage> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return UpdateVersionDialog();
+        final data = UpdateVersion(
+            appStoreUrl: 'https://itunes.apple.com/cn/app/id1380512641',
+            versionName: 'v1.1.1',
+            content:
+                '1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx');
+        return UpdateVersionDialog(data: data);
       },
     );
   }

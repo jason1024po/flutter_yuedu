@@ -6,22 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateVersion {
-  String appStoreUrl;
-  String apkUrl;
-  String content;
+  final String appStoreUrl;
+  final String apkUrl;
+  final String versionName;
+  final String content;
+
+  UpdateVersion(
+      {this.appStoreUrl, this.apkUrl, this.versionName, this.content});
 }
 
 class UpdateVersionDialog extends Dialog {
-  UpdateVersionDialog({
-    Key key,
-  }) : super(key: key);
+  final UpdateVersion data;
+
+  UpdateVersionDialog({Key key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var _maxContentHeight =
-        min(MediaQuery.of(context).size.height - 270, 180.0);
-    final EdgeInsets padding = MediaQuery.of(context).padding;
-    print(padding);
+    final screenSize = MediaQuery.of(context).size;
+    var _maxContentHeight = min(screenSize.height - 300, 180.0);
 
     return Material(
         type: MaterialType.transparency,
@@ -29,13 +31,11 @@ class UpdateVersionDialog extends Dialog {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                  width: 265,
+                  width: screenSize.height > screenSize.width ? 265 : 370,
                   decoration: ShapeDecoration(
                       color: Color(0xFFFFFFFF),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6.0),
-                        ),
+                        borderRadius: BorderRadius.circular(6),
                       )),
                   child: Column(children: <Widget>[
                     ClipRRect(
@@ -43,13 +43,11 @@ class UpdateVersionDialog extends Dialog {
                           topLeft: Radius.circular(6.0),
                           topRight: Radius.circular(6.0),
                         ),
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              height: 110,
-                            ),
-                            Image.asset("images/update/ic_update_bg.png")
-                          ],
+                        child: Image.asset(
+                          "images/update/ic_update_bg.png",
+                          height: 110,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
                         )),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
@@ -61,7 +59,7 @@ class UpdateVersionDialog extends Dialog {
                                 )))),
                     Container(
                       child: Text(
-                        'v1.1.1',
+                        data.versionName,
                         style: TextStyle(
                             color: Color(0xff3782e5),
                             fontWeight: FontWeight.w500),
@@ -73,7 +71,7 @@ class UpdateVersionDialog extends Dialog {
                         padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: SingleChildScrollView(
                           child: Text(
-                            '1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx',
+                            data.content,
                             style: TextStyle(color: Colors.black87),
                           ),
                         ),
@@ -130,7 +128,7 @@ class UpdateVersionDialog extends Dialog {
   _updateButtonTap(BuildContext context) async {
     Navigator.pop(context);
     if (Platform.isIOS) {
-      const url = 'https://itunes.apple.com/cn/app/id1380512641';
+      final url = data.appStoreUrl;
       if (await canLaunch(url)) {
         await launch(url, forceSafariVC: false);
       } else {
