@@ -73,8 +73,6 @@ class MyBottomNavigationBar extends StatelessWidget {
   BottomNavigationBarItem _getBottomBarItem(
       String title, String image, String selectedImage, BuildContext context,
       [Widget badge]) {
-    print("dd");
-
     final _screenWidth = MediaQuery.of(context).size.width;
     final _tabBarIconWidth = _screenWidth / _tabBarData.length;
     const _tabBarIconHeight = 22.0;

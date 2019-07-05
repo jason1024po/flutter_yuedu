@@ -7,23 +7,25 @@ import 'pages/main/main_page.dart';
 import 'pages/main/main_provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<MainProvider>.value(value: MainProvider()),
+      ChangeNotifierProvider<HomeProvider>.value(value: HomeProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<MainProvider>.value(value: MainProvider()),
-          ChangeNotifierProvider<HomeProvider>.value(value: HomeProvider()),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: "大神留条命",
-          home: MainPage(),
-        ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "大神留条命",
+      home: OKToast(
+        radius: 4,
+        textPadding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
+        child: MainPage(),
       ),
     );
   }

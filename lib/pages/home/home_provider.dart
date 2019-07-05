@@ -16,7 +16,7 @@ class HomeProvider with ChangeNotifier {
   Future<void> fetchData() async {
     // 缓存
     KeyValueStore.get(URL).then((value) {
-      print("缓存来了");
+      print("缓存数据");
       data = List.from(value.content);
       notifyListeners();
     }).catchError((error) {
