@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateVersion {
@@ -15,10 +17,23 @@ class UpdateVersion {
       {this.appStoreUrl, this.apkUrl, this.versionName, this.content});
 }
 
-class UpdateVersionDialog extends Dialog {
+class UpdateVersionDialog extends StatefulWidget {
   final UpdateVersion data;
 
   UpdateVersionDialog({Key key, this.data}) : super(key: key);
+
+  @override
+  _UpdateVersionDialogState createState() => _UpdateVersionDialogState();
+}
+
+class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
+  static const channelName = 'plugins.iwubida.com/update_version';
+  static const stream = const EventChannel(channelName);
+
+  // 进度订阅
+  StreamSubscription downloadSubscription;
+
+  int percent = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +74,7 @@ class UpdateVersionDialog extends Dialog {
                                 )))),
                     Container(
                       child: Text(
-                        data.versionName,
+                        widget.data.versionName,
                         style: TextStyle(
                             color: Color(0xff3782e5),
                             fontWeight: FontWeight.w500),
@@ -71,7 +86,7 @@ class UpdateVersionDialog extends Dialog {
                         padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: SingleChildScrollView(
                           child: Text(
-                            data.content,
+                            widget.data.content,
                             style: TextStyle(color: Colors.black87),
                           ),
                         ),
@@ -92,7 +107,7 @@ class UpdateVersionDialog extends Dialog {
                         height: 40,
                         child: RaisedButton(
                             child: Text(
-                              "立即升级",
+                              percent > 0 ? "升级中$percent%" : "立即升级",
                               style: TextStyle(color: Color(0xdfffffff)),
                             ),
                             color: const Color(0xff5f9afa),
@@ -126,16 +141,61 @@ class UpdateVersionDialog extends Dialog {
   }
 
   _updateButtonTap(BuildContext context) async {
-    Navigator.pop(context);
     if (Platform.isIOS) {
-      final url = data.appStoreUrl;
+      final url = widget.data.appStoreUrl;
       if (await canLaunch(url)) {
         await launch(url, forceSafariVC: false);
       } else {
         throw 'Could not launch $url';
       }
     } else if (Platform.isAndroid) {
-      print("下载 apk");
+      debugPrint("下载 apk");
+      _startDownload();
     }
+  }
+
+  // 开始下载
+  void _startDownload() {
+    if (percent > 0) return;
+    if (downloadSubscription == null) {
+      downloadSubscription = stream
+          .receiveBroadcastStream(widget.data.apkUrl)
+          .listen(_updateDownload);
+    }
+  }
+
+  // 停止监听进度
+  void _stopDownload() {
+    if (downloadSubscription != null) {
+      downloadSubscription.cancel();
+      downloadSubscription = null;
+      percent = 0;
+    }
+  }
+
+  // 进度下载
+  void _updateDownload(data) {
+    int progress = data["percent"];
+    if (progress != null) {
+      setState(() {
+        percent = progress;
+      });
+    }
+
+    if (data["start"]) {
+      setState(() {
+        percent = 1;
+      });
+    }
+
+    if (data["done"]) {
+      _stopDownload();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _stopDownload();
   }
 }

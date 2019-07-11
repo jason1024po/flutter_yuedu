@@ -86,6 +86,8 @@ class _SettingPageState extends State<SettingPage> {
         final data = UpdateVersion(
             appStoreUrl: 'https://itunes.apple.com/cn/app/id1380512641',
             versionName: 'v1.1.1',
+            apkUrl:
+                "https://wbd-app.oss-cn-shenzhen.aliyuncs.com/xls/xls-1.5.5_23_20190709_20.20.apk",
             content:
                 '1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx');
         return UpdateVersionDialog(data: data);
