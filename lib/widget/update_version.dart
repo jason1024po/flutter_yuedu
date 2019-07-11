@@ -156,7 +156,6 @@ class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
 
   // 开始下载
   void _startDownload() {
-    if (percent > 0) return;
     if (downloadSubscription == null) {
       downloadSubscription = stream
           .receiveBroadcastStream(widget.data.apkUrl)
@@ -180,16 +179,6 @@ class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
       setState(() {
         percent = progress;
       });
-    }
-
-    if (data["start"]) {
-      setState(() {
-        percent = 1;
-      });
-    }
-
-    if (data["done"]) {
-      _stopDownload();
     }
   }
 

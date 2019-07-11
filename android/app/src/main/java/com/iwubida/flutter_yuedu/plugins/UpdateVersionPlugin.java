@@ -79,6 +79,10 @@ public class UpdateVersionPlugin implements EventChannel.StreamHandler {
       @Override
       public void start() {
         data.put("start", true);
+        data.put("cancel", true);
+        data.put("done", true);
+        data.put("error", false);
+        data.put("percent", 0);
         eventSink.success(data);
       }
 
