@@ -196,7 +196,7 @@ class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
                         height: 40,
                         child: RaisedButton(
                             child: Text(
-                              percent > 0 ? "升级中$percent%" : "立即升级",
+                              _getButtonText(),
                               style: TextStyle(color: Color(0xdfffffff)),
                             ),
                             color: const Color(0xff5f9afa),
@@ -227,5 +227,15 @@ class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
                         ))
                   ]))
             ]));
+  }
+
+  _getButtonText() {
+    if (percent == 100) {
+      return "正在升级";
+    }
+    if (percent > 0) {
+      return "升级中$percent%";
+    }
+    return "立即升级";
   }
 }

@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 import 'package:flutter_yuedu/widget/update_version.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'about_page.dart';
 
@@ -52,7 +50,10 @@ class _SettingPageState extends State<SettingPage> {
                 setState(() {
                   notificationIsOpen = value;
                 });
-                _goToSystemSetting();
+                Future.delayed(const Duration(seconds: 1), () {
+                  // 打开系统设置
+                  PermissionHandler().openAppSettings();
+                });
               })),
       _getListItem("用户反馈", "images/setting/usercenter_feedback.png"),
       _getListItem("系统更新", "images/setting/setting_version.png", null, () {
@@ -62,19 +63,6 @@ class _SettingPageState extends State<SettingPage> {
         MyNavigator.push(context, AboutPage());
       }),
     ];
-  }
-
-  _goToSystemSetting() async {
-    if (Platform.isIOS) {
-      const url = 'app-settings:';
-      if (await canLaunch(url)) {
-        await launch(url, forceSafariVC: false);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } else if (Platform.isAndroid) {
-      print("下载 apk");
-    }
   }
 
   // 更新 app 弹窗
@@ -89,7 +77,7 @@ class _SettingPageState extends State<SettingPage> {
             apkUrl:
                 "https://wbd-app.oss-cn-shenzhen.aliyuncs.com/xls/xls-1.5.5_23_20190709_20.20.apk",
             content:
-                '1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx1.Bug解决Bug解决Bug解决Bug解决Bug解决\n 2.xxxx');
+                '1.优化订单显示\n2.解决数据加载异常问题\n3.优化无网络显示效果\n4.解决iPhoneX 兼容性问题\n5.修复定位错误问题');
         return UpdateVersionDialog(data: data);
       },
     );
@@ -118,6 +106,7 @@ class _SettingPageState extends State<SettingPage> {
         ),
         trailing: SizedBox(
           width: 50,
+          height: 50,
           child: Align(
             alignment: Alignment.centerRight,
             child: trailing != null
