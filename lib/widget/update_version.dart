@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateVersion {
@@ -34,6 +36,93 @@ class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
   StreamSubscription downloadSubscription;
 
   int percent = 0;
+
+  _updateButtonTap(BuildContext context) async {
+    if (Platform.isIOS) {
+      final url = widget.data.appStoreUrl;
+      if (await canLaunch(url)) {
+        await launch(url, forceSafariVC: false);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } else if (Platform.isAndroid) {
+      androidDownloadHandle();
+    }
+  }
+
+  // android 下载
+  androidDownloadHandle() async {
+    // 权限检查
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    print(permissions);
+    if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+      // 开始下载
+      _startDownload();
+    } else {
+      showSettingDialog();
+    }
+  }
+
+  // 打开应用设置
+  showSettingDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("需要打开存储权限"),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: new Text("取消"),
+              ),
+              new FlatButton(
+                onPressed: () {
+                  PermissionHandler().openAppSettings();
+                  Navigator.of(context).pop();
+                },
+                child: new Text("确认"),
+              ),
+            ],
+          );
+        });
+  }
+
+  // 开始下载
+  void _startDownload() {
+    if (downloadSubscription == null) {
+      downloadSubscription = stream
+          .receiveBroadcastStream(widget.data.apkUrl)
+          .listen(_updateDownload);
+    }
+  }
+
+  // 停止监听进度
+  void _stopDownload() {
+    if (downloadSubscription != null) {
+      downloadSubscription.cancel();
+      downloadSubscription = null;
+      percent = 0;
+    }
+  }
+
+  // 进度下载
+  void _updateDownload(data) {
+    int progress = data["percent"];
+    if (progress != null) {
+      setState(() {
+        percent = progress;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _stopDownload();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,53 +227,5 @@ class _UpdateVersionDialogState extends State<UpdateVersionDialog> {
                         ))
                   ]))
             ]));
-  }
-
-  _updateButtonTap(BuildContext context) async {
-    if (Platform.isIOS) {
-      final url = widget.data.appStoreUrl;
-      if (await canLaunch(url)) {
-        await launch(url, forceSafariVC: false);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } else if (Platform.isAndroid) {
-      debugPrint("下载 apk");
-      _startDownload();
-    }
-  }
-
-  // 开始下载
-  void _startDownload() {
-    if (downloadSubscription == null) {
-      downloadSubscription = stream
-          .receiveBroadcastStream(widget.data.apkUrl)
-          .listen(_updateDownload);
-    }
-  }
-
-  // 停止监听进度
-  void _stopDownload() {
-    if (downloadSubscription != null) {
-      downloadSubscription.cancel();
-      downloadSubscription = null;
-      percent = 0;
-    }
-  }
-
-  // 进度下载
-  void _updateDownload(data) {
-    int progress = data["percent"];
-    if (progress != null) {
-      setState(() {
-        percent = progress;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _stopDownload();
   }
 }

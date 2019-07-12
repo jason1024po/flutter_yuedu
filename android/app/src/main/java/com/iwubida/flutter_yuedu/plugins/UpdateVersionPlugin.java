@@ -1,17 +1,10 @@
 package com.iwubida.flutter_yuedu.plugins;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
-
-import androidx.annotation.NonNull;
-
-import com.azhon.appupdate.config.UpdateConfiguration;
-import com.azhon.appupdate.listener.OnDownloadListener;
-import com.azhon.appupdate.manager.DownloadManager;
-import com.iwubida.flutter_yuedu.R;
+import com.king.app.updater.AppUpdater;
+import com.king.app.updater.callback.UpdateCallback;
 
 
 import java.io.File;
@@ -25,38 +18,17 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /** UpdateVersionPlugin */
 public class UpdateVersionPlugin implements EventChannel.StreamHandler {
 
+  private static String TAG = "MY_UPDATE";
+  private static Context context;
 
-  private  static String TAG = "MYUPDATE";
-
-  private final Context context;
-
-  // 上次进度
-  static int lastPercent = 0;
-
-  // 下载管理
-  DownloadManager manager;
+  public UpdateVersionPlugin(Context context) {
+    this.context = context;
+  }
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     final EventChannel channel = new EventChannel(registrar.messenger(), "plugins.iwubida.com/update_version");
     channel.setStreamHandler(new UpdateVersionPlugin(registrar.context()));
-  }
-
-  public UpdateVersionPlugin(Context context) {
-    this.context = context;
-    setupDownload();
-  }
-
-  private void setupDownload() {
-    manager = DownloadManager.getInstance(context);
-    // 下载配置
-    UpdateConfiguration configuration = new UpdateConfiguration();
-    configuration.setShowBgdToast(false);
-
-    manager.setApkName(getUpdatePackageName(context))
-            .setSmallIcon(R.mipmap.ic_launcher)
-            //可设置，可不设置
-            .setConfiguration(configuration);
   }
 
 
@@ -71,71 +43,63 @@ public class UpdateVersionPlugin implements EventChannel.StreamHandler {
       eventSink.error(TAG, "URL错误", o);
     }
 
-    manager.setApkUrl(o.toString());
+    AppUpdater update = new AppUpdater(context,o.toString()).setUpdateCallback(new UpdateCallback() {
 
-    manager.getConfiguration().setOnDownloadListener(new OnDownloadListener() {
       Map data = new HashMap<String, Object>();
 
+      // 发送数据到 Flutter
+      private  void sendData() {
+        eventSink.success(data);
+      }
+
       @Override
-      public void start() {
+      public void onDownloading(boolean isDownloading) {
+
+      }
+
+      @Override
+      public void onStart(String url) {
         data.put("start", true);
         data.put("cancel", true);
         data.put("done", true);
         data.put("error", false);
-        data.put("percent", 0);
-        eventSink.success(data);
+        data.put("percent", 1);
+        sendData();
       }
 
       @Override
-      public void downloading(int max, int progress) {
-        // 下载进度
-        int percent = (int)(progress * 1.0 / max * 100);
-        // 限制消息发送
-        if (lastPercent != percent && percent > 0) {
+      public void onProgress(int progress, int total, boolean isChange) {
+        int percent = (int)(progress * 1.0 / total * 100);
+        if (isChange && percent > 0) {
           data.put("percent", percent);
-          eventSink.success(data);
+          sendData();
         }
-        lastPercent = percent;
       }
 
       @Override
-      public void done(File apk) {
+      public void onFinish(File file) {
         data.put("done", true);
-        eventSink.success(data);
+        sendData();
       }
 
       @Override
-      public void cancel() {
-        data.put("cancel", true);
-        eventSink.success(data);
-      }
-
-      @Override
-      public void error(Exception e) {
+      public void onError(Exception e) {
         data.put("error", e.toString());
-        eventSink.success(data);
+        sendData();
+      }
+
+      @Override
+      public void onCancel() {
+        data.put("cancel", true);
+        sendData();
       }
     });
-    manager.download();
+    update.start();
   }
 
   @Override
   public void onCancel(Object o) {
-    Log.i(TAG, "取消下载1111");
-    manager.cancel();
-  }
-
-
-  // 获取包名
-  public static String getUpdatePackageName(@NonNull Context context) {
-    String packageName = "update_app.apk";
-    try {
-      PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-      packageName = info.packageName + ".apk";
-    } catch (PackageManager.NameNotFoundException e) {
-      e.printStackTrace();
-    }
-    return packageName;
+    Log.i(TAG, "取消下载-集成的第三方下载没有提供取消方法");
   }
 
 }

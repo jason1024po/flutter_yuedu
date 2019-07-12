@@ -63,8 +63,5 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     // 更新
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
-    implementation 'com.azhon:appupdateX:2.1.0'
-
-
+    implementation 'com.king.app:app-updater:1.0.4-androidx'
 }
