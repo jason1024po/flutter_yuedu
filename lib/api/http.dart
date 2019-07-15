@@ -18,8 +18,10 @@ class Http {
     return Response(result["code"], result["message"], result["body"]);
   }
 
-  static Future<Response> post(String url, {body}) async {
-    var response = await http.post(url.toString(), body: body);
+  static Future<Response> post(String url,
+      {body, String version = kVersion}) async {
+    var response =
+        await http.post(Api(url, version: version).toString(), body: body);
     var result = json.decode(response.body);
 
     return Response(result["code"], result["message"], result["body"]);

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
 class BookDetailsPage extends StatefulWidget {
-  final String url;
+  final String id;
 
-  const BookDetailsPage({Key key, this.url}) : super(key: key);
+  const BookDetailsPage(this.id, {Key key}) : super(key: key);
 
   @override
   _BookDetailsPageState createState() => _BookDetailsPageState();
@@ -23,7 +23,7 @@ class _BookDetailsPageState extends State<BookDetailsPage>
         title: MyTitle("详情"),
       ),
       body: Center(
-        child: Text("xxxx"),
+        child: Text("ID:" + widget.id),
       ),
     );
   }

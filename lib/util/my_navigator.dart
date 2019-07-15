@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/pages/book/book_details_page.dart';
+import 'package:flutter_yuedu/pages/book/book_list.dart';
 import 'package:flutter_yuedu/pages/member/join_member.dart';
 import 'package:flutter_yuedu/pages/webview/webview.dart';
 
@@ -17,12 +18,18 @@ class MyNavigator {
       print("context 为空");
       return;
     }
+
+    // query 参数
+    final params = Uri.dataFromString(link).queryParameters;
+
     if (link.startsWith("http")) {
       push(_context, WebViewPage(url: link)); // 网页
     } else if (link.startsWith("ydathena://member")) {
       push(_context, JoinMember()); // 会员中心
     } else if (link.startsWith("ydathena://book")) {
-      push(_context, BookDetailsPage()); // 详情
+      push(_context, BookDetailsPage(params["libraryId"])); // 详情
+    } else if (link.startsWith("ydathena://morebook")) {
+      push(_context, BookList(params["moduleId"])); // 图书列表
     } else {
       print("未实现的路由：" + link);
     }

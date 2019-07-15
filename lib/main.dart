@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/book/book_list_provider.dart';
 import 'pages/home/home_provider.dart';
 import 'pages/main/main_page.dart';
 import 'pages/main/main_provider.dart';
@@ -11,6 +12,7 @@ void main() {
     providers: [
       ChangeNotifierProvider<MainProvider>.value(value: MainProvider()),
       ChangeNotifierProvider<HomeProvider>.value(value: HomeProvider()),
+      ChangeNotifierProvider<BookListProvider>.value(value: BookListProvider()),
     ],
     child: MyApp(),
   ));
