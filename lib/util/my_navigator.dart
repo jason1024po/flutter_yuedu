@@ -1,7 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/pages/book/book_details_page.dart';
+import 'package:flutter_yuedu/pages/member/join_member.dart';
+import 'package:flutter_yuedu/pages/webview/webview.dart';
 
 class MyNavigator {
+  // 设置一次 context 方便后面
+  static BuildContext _context;
+
+  static set context(BuildContext value) {
+    _context = value;
+  }
+
+  static pushWithLink(String link) {
+    if (_context == null) {
+      print("context 为空");
+      return;
+    }
+    if (link.startsWith("http")) {
+      push(_context, WebViewPage(url: link)); // 网页
+    } else if (link.startsWith("ydathena://member")) {
+      push(_context, JoinMember()); // 会员中心
+    } else if (link.startsWith("ydathena://book")) {
+      push(_context, BookDetailsPage()); // 详情
+    } else {
+      print("未实现的路由：" + link);
+    }
+  }
+
   // push 新页面
   static push(BuildContext context, Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));

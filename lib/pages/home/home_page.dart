@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage>
           return SliverToBoxAdapter(
             child: Padding(
               padding: padding,
-              child: HomeTinyBanner(),
+              child: HomeTinyBanner(Map.from(payload["tinyBanners"][0])),
             ),
           );
         case "HIGHLY_RECOMMENDED_BOOK":

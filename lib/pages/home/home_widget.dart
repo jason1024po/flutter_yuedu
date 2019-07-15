@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:provider/provider.dart';
 
 import 'home_provider.dart';
@@ -41,6 +42,9 @@ class HomeBanner extends StatelessWidget {
       child: Consumer<HomeProvider>(builder: (context, state, child) {
         return Swiper(
           viewportFraction: fraction,
+          onTap: (index) {
+            MyNavigator.pushWithLink(data[index]["link"]);
+          },
           itemBuilder: (BuildContext context, int index) {
             return Container(
               child: Padding(
@@ -73,30 +77,36 @@ class HomeQuickEntrance extends StatelessWidget {
       child: Flex(
         direction: Axis.horizontal,
         children: data
-            .map((item) => _menuItem(item["title"], item["imageUrl"]))
+            .map((item) =>
+                _menuItem(item["title"], item["imageUrl"], item["link"]))
             .toList(),
       ),
     );
   }
 
-  Widget _menuItem(String title, String url) {
+  Widget _menuItem(String title, String url, String link) {
     return Expanded(
       flex: 1,
-      child: Column(
-        children: <Widget>[
-          CachedNetworkImage(
-            width: 60,
-            height: 60,
-            imageUrl: url,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 5),
-            child: Text(
-              title,
-              style: TextStyle(color: Color(0xff6e6e6e), fontSize: 11),
+      child: GestureDetector(
+        onTap: () {
+          MyNavigator.pushWithLink(link);
+        },
+        child: Column(
+          children: <Widget>[
+            CachedNetworkImage(
+              width: 60,
+              height: 60,
+              imageUrl: url,
             ),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Text(
+                title,
+                style: TextStyle(color: Color(0xff6e6e6e), fontSize: 11),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -133,7 +143,12 @@ class HomeHeader extends StatelessWidget {
                 ? Expanded(
                     child: Container(
                     alignment: Alignment.centerRight,
-                    child: Image.asset("images/main/main_more_arrow.png"),
+                    child: GestureDetector(
+                      onTap: () =>
+                          MyNavigator.pushWithLink(data["hasMoreLink"]),
+                      child: Image.asset("images/main/main_more_arrow.png",
+                          height: 30),
+                    ),
                   ))
                 : Container()
           ],
@@ -143,15 +158,19 @@ class HomeHeader extends StatelessWidget {
 
 /// 全局 banner
 class HomeTinyBanner extends StatelessWidget {
+  final Map<String, Object> data;
+  HomeTinyBanner(this.data);
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: CachedNetworkImage(
-            imageUrl:
-                "https://oimagec8.ydstatic.com/image?id=-6043440067699066638&product=xue"),
+    return GestureDetector(
+      onTap: () => MyNavigator.pushWithLink(data["link"]),
+      child: Padding(
+        padding: EdgeInsets.only(top: 10, bottom: 10),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: CachedNetworkImage(imageUrl: data["imageUrl"]),
+        ),
       ),
     );
   }
@@ -185,54 +204,57 @@ class HomeNormalBook extends StatelessWidget {
   }
 
   Widget _item(int index, BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Color(0xffeaeaea),
-                  offset: Offset(0.0, 1.0),
-                  blurRadius: 4.0,
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-//                      width: 50,
-                      color: Color(0xfffbfbfb),
-                      child: CachedNetworkImage(
-                        useOldImageOnUrlChange: true,
-                        imageUrl: data[index]["coverImageUrl"],
-                        width: double.infinity,
-                        fit: BoxFit.fitWidth,
-                      )),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: CachedNetworkImage(
-                      imageUrl: data[index]["subscriptUrl"] ?? "",
-                    ),
-                  )
+    return GestureDetector(
+      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                child: Container(
+              decoration: BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Color(0xffeaeaea),
+                    offset: Offset(0.0, 1.0),
+                    blurRadius: 4.0,
+                  ),
                 ],
               ),
-            ),
-          )),
-          Container(
-            padding: const EdgeInsets.fromLTRB(4, 5, 4, 5),
-            child: Text(
-              data[index]["title"],
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12),
-            ),
-          )
-        ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+//                      width: 50,
+                        color: Color(0xfffbfbfb),
+                        child: CachedNetworkImage(
+                          useOldImageOnUrlChange: true,
+                          imageUrl: data[index]["coverImageUrl"],
+                          width: double.infinity,
+                          fit: BoxFit.fitWidth,
+                        )),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: CachedNetworkImage(
+                        imageUrl: data[index]["subscriptUrl"] ?? "",
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )),
+            Container(
+              padding: const EdgeInsets.fromLTRB(4, 5, 4, 5),
+              child: Text(
+                data[index]["title"],
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -249,84 +271,90 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
     return SliverFixedExtentList(
       itemExtent: 130.0,
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Container(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Color(0xffeaeaea),
-                      offset: Offset(0.0, 1.0),
-                      blurRadius: 4.0,
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(6.0),
-                  child: Container(
-                      width: 77,
-                      color: Color(0xfffbfbfb),
-                      child: CachedNetworkImage(
-                        imageUrl: data[index]["coverImageUrl"],
-                        fit: BoxFit.cover,
-                        height: 106,
-                      )),
-                ),
-              ),
-              Positioned(
-                top: 5,
-                left: 95,
-                right: 0,
-                child: Text(
-                  data[index]["title"],
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      color: Color(0xff444444),
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Positioned(
-                top: 28,
-                left: 95,
-                right: 0,
-                child: Text(
-                  data[index]["tags"],
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(color: Color(0xff9b9b9b), fontSize: 12),
-                ),
-              ),
-              Positioned(
-                top: 75,
-                left: 95,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                      color: Color(0xfff8f8f8),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: Text(
-                    data[index]["description"],
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Color(0xff979797), fontSize: 12),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 5,
-                left: 1,
-                right: 1,
-                child: Divider(),
-              )
-            ],
-          ),
-        );
+        return _getItem(index);
       }, childCount: data.length),
     );
-    ;
+  }
+
+  _getItem(int index) {
+    return GestureDetector(
+      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      child: Container(
+        padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Color(0xffeaeaea),
+                    offset: Offset(0.0, 1.0),
+                    blurRadius: 4.0,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: Container(
+                    width: 77,
+                    color: Color(0xfffbfbfb),
+                    child: CachedNetworkImage(
+                      imageUrl: data[index]["coverImageUrl"],
+                      fit: BoxFit.cover,
+                      height: 106,
+                    )),
+              ),
+            ),
+            Positioned(
+              top: 5,
+              left: 95,
+              right: 0,
+              child: Text(
+                data[index]["title"],
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Color(0xff444444),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Positioned(
+              top: 28,
+              left: 95,
+              right: 0,
+              child: Text(
+                data[index]["tags"],
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: TextStyle(color: Color(0xff9b9b9b), fontSize: 12),
+              ),
+            ),
+            Positioned(
+              top: 75,
+              left: 95,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                    color: Color(0xfff8f8f8),
+                    borderRadius: BorderRadius.circular(6)),
+                child: Text(
+                  data[index]["description"],
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Color(0xff979797), fontSize: 12),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 5,
+              left: 1,
+              right: 1,
+              child: Divider(),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -342,47 +370,52 @@ class HomeColumn extends StatelessWidget {
     return SliverFixedExtentList(
       itemExtent: 140.0,
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Container(
-          padding:
-              const EdgeInsets.only(left: 22, right: 22, top: 5, bottom: 5),
-          child: Stack(
-            children: <Widget>[
-              CachedNetworkImage(imageUrl: data[index]["imageUrl"]),
-              Positioned(
-                left: 110,
-                top: 32,
-                child: Text(
-                  data[index]["title"],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-              ),
-              Positioned(
-                top: 60,
-                left: 110,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.from(data[index]["subItemNames"])
-                      .map((item) => Padding(
-                            padding: const EdgeInsets.only(top: 2, bottom: 2),
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                    "images/main/main_section_play.png"),
-                                Text(
-                                  item,
-                                  style: TextStyle(
-                                      color: Colors.black38, fontSize: 12),
-                                )
-                              ],
-                            ),
-                          ))
-                      .toList(),
-                ),
-              )
-            ],
-          ),
-        );
+        return _getItem(index);
       }, childCount: data.length),
+    );
+  }
+
+  _getItem(int index) {
+    return GestureDetector(
+      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      child: Container(
+        padding: const EdgeInsets.only(left: 22, right: 22, top: 5, bottom: 5),
+        child: Stack(
+          children: <Widget>[
+            CachedNetworkImage(imageUrl: data[index]["imageUrl"]),
+            Positioned(
+              left: 110,
+              top: 32,
+              child: Text(
+                data[index]["title"],
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ),
+            Positioned(
+              top: 60,
+              left: 110,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.from(data[index]["subItemNames"])
+                    .map((item) => Padding(
+                          padding: const EdgeInsets.only(top: 2, bottom: 2),
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset("images/main/main_section_play.png"),
+                              Text(
+                                item,
+                                style: TextStyle(
+                                    color: Colors.black38, fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -407,34 +440,40 @@ class HomeSeries extends StatelessWidget {
             childAspectRatio: 1.2),
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
-            return Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Color(0xffeaeaea),
-                      offset: Offset(0.0, 1.0),
-                      blurRadius: 4.0,
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(6.0),
-                  child: Container(
-//                      width: 100,
-                      color: Color(0xfffbfbfb),
-                      child: CachedNetworkImage(
-                        imageUrl: data[index]["imageUrl"],
-                        fit: BoxFit.cover,
-                      )),
-                ),
-              ),
-            );
+            return _getItem(index);
           },
           childCount: data.length,
         ),
       ),
     );
-    ;
+  }
+
+  _getItem(int index) {
+    return GestureDetector(
+      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Color(0xffeaeaea),
+                offset: Offset(0.0, 1.0),
+                blurRadius: 4.0,
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(6.0),
+            child: Container(
+//                      width: 100,
+                color: Color(0xfffbfbfb),
+                child: CachedNetworkImage(
+                  imageUrl: data[index]["imageUrl"],
+                  fit: BoxFit.cover,
+                )),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -44,17 +44,10 @@ class _SettingPageState extends State<SettingPage> {
           "推送管理",
           "images/setting/icon_setting_push.png",
           CupertinoSwitch(
-              activeColor: Colors.amber,
-              value: notificationIsOpen,
-              onChanged: (value) {
-                setState(() {
-                  notificationIsOpen = value;
-                });
-                Future.delayed(const Duration(seconds: 1), () {
-                  // 打开系统设置
-                  PermissionHandler().openAppSettings();
-                });
-              })),
+            activeColor: Colors.amber,
+            value: notificationIsOpen,
+            onChanged: _pushButtonTap,
+          )),
       _getListItem("用户反馈", "images/setting/usercenter_feedback.png"),
       _getListItem("系统更新", "images/setting/setting_version.png", null, () {
         _updateVersionHandle();
@@ -63,6 +56,16 @@ class _SettingPageState extends State<SettingPage> {
         MyNavigator.push(context, AboutPage());
       }),
     ];
+  }
+
+  _pushButtonTap(bool value) {
+    setState(() {
+      notificationIsOpen = value;
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      // 打开系统设置
+      PermissionHandler().openAppSettings();
+    });
   }
 
   // 更新 app 弹窗

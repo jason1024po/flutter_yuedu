@@ -50,3 +50,18 @@ class AppBarBack extends StatelessWidget {
     );
   }
 }
+
+class MyTitle extends StatelessWidget {
+  final String _title;
+
+  MyTitle(this._title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(_title,
+        style: TextStyle(
+            color: Colors.black87,
+            fontSize: 15,
+            fontWeight: FontWeight.normal));
+  }
+}

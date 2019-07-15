@@ -5,6 +5,7 @@ import 'package:flutter_yuedu/pages/bookshelf/book_shelf_page.dart';
 import 'package:flutter_yuedu/pages/course/course_page.dart';
 import 'package:flutter_yuedu/pages/home/home_page.dart';
 import 'package:flutter_yuedu/pages/my/my_page.dart';
+import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:provider/provider.dart';
 
 import 'main_provider.dart';
@@ -31,6 +32,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 设置路由 context
+    MyNavigator.context = context;
     final mainState = Provider.of<MainProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
