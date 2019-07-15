@@ -9,6 +9,8 @@ class BookListProvider with ChangeNotifier {
   List<Map<String, Object>> data = [];
 
   Future<void> fetchData(String id) async {
+    data.clear();
+    print("获取列表数据");
     // 网络
     Http.post(URL +
             "?appPageModuleDefinitionId=$id&appPageKey=STAGE_B&offset=0&limit=20")

@@ -36,18 +36,18 @@ class _BookList extends State<BookList> {
   }
 
   _getList(BuildContext context) {
-    final provider = Provider.of<BookListProvider>(context, listen: false);
-
     final screenSize = MediaQuery.of(context).size;
 
-    return GridView.builder(
-        itemCount: provider.data?.length ?? 0,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: (screenSize.width > screenSize.height) ? 6 : 3,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-            childAspectRatio: 0.64),
-        itemBuilder: (_, index) => _getItem(provider.data[index]));
+    return Consumer<BookListProvider>(builder: (context, state, widget) {
+      return GridView.builder(
+          itemCount: state.data?.length ?? 0,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: (screenSize.width > screenSize.height) ? 6 : 3,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 0.64),
+          itemBuilder: (_, index) => _getItem(state.data[index]));
+    });
   }
 
   Widget _getItem(dynamic data) {
