@@ -31,7 +31,7 @@ class BookListProvider with ChangeNotifier {
   }
 
   stopLoading() async {
-    Future.delayed(Duration(milliseconds: 800), () {
+    Future.delayed(Duration(milliseconds: 300), () {
       isLoading = false;
       notifyListeners();
     });

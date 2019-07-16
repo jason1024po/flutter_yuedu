@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/pages/login/login_page.dart';
 import 'package:flutter_yuedu/pages/search/search_page.dart';
+import 'package:flutter_yuedu/widget/loading_animation.dart';
 import 'package:provider/provider.dart';
 
 import 'home_dropdown.dart';
@@ -28,7 +29,14 @@ class _HomePageState extends State<HomePage>
     super.build(context);
     return Scaffold(
       appBar: _appBar(),
-      body: RefreshIndicator(child: _listView(), onRefresh: _handleRefresh),
+      body: RefreshIndicator(
+          child: Consumer<HomeProvider>(builder: (_, state, __) {
+            return LoadingAnimation(
+              loading: state.isLoading,
+              child: _listView(),
+            );
+          }),
+          onRefresh: _handleRefresh),
     );
   }
 
