@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/widget/loading_animation.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  @override
+  _SearchPage createState() => _SearchPage();
+}
+
+class _SearchPage extends State<SearchPage> {
+  bool loading = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfffefefe),
       appBar: MyAppBar(),
-      body: CustomScrollView(
-        physics: ClampingScrollPhysics(),
-        slivers: <Widget>[
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            sliver: SliverList(
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext context, int index) {
-                return Container(
-                    margin: const EdgeInsets.only(top: 8.0),
-                    child: index % 5 == 0 ? Text("1") : Text("2"));
-              }, childCount: 50),
+      body: LoadingAnimation(
+        loading: loading,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              loading = !loading;
+            });
+          },
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Text(!loading ? "显示动画" : "隐藏动画"),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

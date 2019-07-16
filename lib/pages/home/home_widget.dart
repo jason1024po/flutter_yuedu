@@ -194,18 +194,26 @@ class HomeNormalBook extends StatelessWidget {
             crossAxisSpacing: 10.0,
             childAspectRatio: 0.64),
         delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return _item(index, context);
+          (_, int index) {
+            return HomeNormalBookItem(data[index]);
           },
           childCount: data.length,
         ),
       ),
     );
   }
+}
 
-  Widget _item(int index, BuildContext context) {
+/// 普通书item
+class HomeNormalBookItem extends StatelessWidget {
+  final Map<String, dynamic> data;
+
+  HomeNormalBookItem(this.data);
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      onTap: () => MyNavigator.pushWithLink(data["link"]),
       child: Container(
         child: Column(
           children: <Widget>[
@@ -229,7 +237,7 @@ class HomeNormalBook extends StatelessWidget {
                         color: Color(0xfffbfbfb),
                         child: CachedNetworkImage(
                           useOldImageOnUrlChange: true,
-                          imageUrl: data[index]["coverImageUrl"],
+                          imageUrl: data["coverImageUrl"],
                           width: double.infinity,
                           fit: BoxFit.fitWidth,
                         )),
@@ -238,7 +246,7 @@ class HomeNormalBook extends StatelessWidget {
                       right: 0,
                       left: 0,
                       child: CachedNetworkImage(
-                        imageUrl: data[index]["subscriptUrl"] ?? "",
+                        imageUrl: data["subscriptUrl"] ?? "",
                       ),
                     )
                   ],
@@ -248,7 +256,7 @@ class HomeNormalBook extends StatelessWidget {
             Container(
               padding: const EdgeInsets.fromLTRB(4, 5, 4, 5),
               child: Text(
-                data[index]["title"],
+                data["title"],
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 12),
               ),
@@ -257,6 +265,7 @@ class HomeNormalBook extends StatelessWidget {
         ),
       ),
     );
+    ;
   }
 }
 
@@ -271,14 +280,22 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
     return SliverFixedExtentList(
       itemExtent: 130.0,
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return _getItem(index);
+        return HomeHighlyRecommendedBookItem(data[index]);
       }, childCount: data.length),
     );
   }
+}
 
-  _getItem(int index) {
+/// 高类型 item
+class HomeHighlyRecommendedBookItem extends StatelessWidget {
+  final Map<String, dynamic> data;
+
+  HomeHighlyRecommendedBookItem(this.data);
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      onTap: () => MyNavigator.pushWithLink(data["link"]),
       child: Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
         child: Stack(
@@ -299,7 +316,7 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
                     width: 77,
                     color: Color(0xfffbfbfb),
                     child: CachedNetworkImage(
-                      imageUrl: data[index]["coverImageUrl"],
+                      imageUrl: data["coverImageUrl"],
                       fit: BoxFit.cover,
                       height: 106,
                     )),
@@ -310,7 +327,7 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
               left: 95,
               right: 0,
               child: Text(
-                data[index]["title"],
+                data["title"],
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: Color(0xff444444),
@@ -323,7 +340,7 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
               left: 95,
               right: 0,
               child: Text(
-                data[index]["tags"],
+                data["tags"],
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyle(color: Color(0xff9b9b9b), fontSize: 12),
@@ -339,7 +356,7 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
                     color: Color(0xfff8f8f8),
                     borderRadius: BorderRadius.circular(6)),
                 child: Text(
-                  data[index]["description"],
+                  data["description"],
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Color(0xff979797), fontSize: 12),
                 ),
@@ -347,7 +364,7 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
             ),
             Positioned(
               bottom: 5,
-              left: 1,
+              left: 88,
               right: 1,
               child: Divider(),
             )

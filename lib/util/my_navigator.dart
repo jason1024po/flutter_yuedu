@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/pages/book/book_details_page.dart';
 import 'package:flutter_yuedu/pages/book/book_list.dart';
+import 'package:flutter_yuedu/pages/book/book_list_highly_recommended.dart';
 import 'package:flutter_yuedu/pages/member/join_member.dart';
 import 'package:flutter_yuedu/pages/webview/webview.dart';
 
@@ -30,6 +31,8 @@ class MyNavigator {
       push(_context, BookDetailsPage(params["libraryId"])); // 详情
     } else if (link.startsWith("ydathena://morebook")) {
       push(_context, BookList(params["moduleId"])); // 图书列表
+    } else if (link.startsWith("ydathena://morehighlyrecommendedbook")) {
+      push(_context, BookListHighlyRecommended(params["moduleId"])); // 图书列表
     } else {
       print("未实现的路由：" + link);
     }

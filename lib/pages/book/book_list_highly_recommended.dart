@@ -6,16 +6,17 @@ import 'package:provider/provider.dart';
 
 import 'book_list_provider.dart';
 
-class BookList extends StatefulWidget {
+class BookListHighlyRecommended extends StatefulWidget {
   final String id;
 
-  BookList(this.id);
+  BookListHighlyRecommended(this.id);
 
   @override
-  _BookListState createState() => _BookListState();
+  _BookListHighlyRecommendedState createState() =>
+      _BookListHighlyRecommendedState();
 }
 
-class _BookListState extends State<BookList> {
+class _BookListHighlyRecommendedState extends State<BookListHighlyRecommended> {
   @override
   void initState() {
     super.initState();
@@ -29,26 +30,22 @@ class _BookListState extends State<BookList> {
       appBar: MyAppBar(),
       body: Container(
         padding:
-            const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
+            const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 12),
         child: _getList(context),
       ),
     );
   }
 
   _getList(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-
     return Consumer<BookListProvider>(builder: (context, state, widget) {
       return LoadingAnimation(
         loading: state.isLoading,
-        child: GridView.builder(
-            itemCount: state.data?.length ?? 0,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: (screenSize.width > screenSize.height) ? 6 : 3,
-                mainAxisSpacing: 10.0,
-                crossAxisSpacing: 10.0,
-                childAspectRatio: 0.64),
-            itemBuilder: (_, index) => HomeNormalBookItem(state.data[index])),
+        child: ListView.builder(
+            itemExtent: 134,
+            itemCount: state.data.length,
+            itemBuilder: (_, index) {
+              return HomeHighlyRecommendedBookItem(state.data[index]);
+            }),
       );
     });
   }
