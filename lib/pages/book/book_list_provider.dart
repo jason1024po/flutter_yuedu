@@ -20,13 +20,20 @@ class BookListProvider with ChangeNotifier {
         .then((result) {
       final list = result.data["appPageModule"]["payload"]["books"];
       data = List.from(list);
-      isLoading = false;
       notifyListeners();
+      stopLoading();
     }).catchError((error) {
-      isLoading = false;
       showToast("网络错误");
       notifyListeners();
       print(error);
+      stopLoading();
+    });
+  }
+
+  stopLoading() async {
+    Future.delayed(Duration(milliseconds: 800), () {
+      isLoading = false;
+      notifyListeners();
     });
   }
 }

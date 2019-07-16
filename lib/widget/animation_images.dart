@@ -12,7 +12,7 @@ class AnimationImages extends StatefulWidget {
 
 class _AnimationImagesState extends State<AnimationImages> {
   // 显示的 image
-  Image activeImage;
+  int showIndex = 0;
 
   bool _disposed;
 
@@ -21,16 +21,16 @@ class _AnimationImagesState extends State<AnimationImages> {
     super.initState();
     _disposed = false;
 
-    activeImage = widget.images.last;
-
-    _updateImage(widget.images.length, Duration(milliseconds: 40));
+    Future.delayed(Duration(milliseconds: 200), () {
+      _updateImage(widget.images.length, Duration(milliseconds: 40));
+    });
   }
 
   _updateImage(int count, Duration millisecond) {
     Future.delayed(millisecond, () {
       if (_disposed) return;
       setState(() {
-        activeImage = widget.images[widget.images.length - count--];
+        showIndex = widget.images.length - count--;
       });
       if (count < 1) {
         count = widget.images.length;
@@ -48,7 +48,10 @@ class _AnimationImagesState extends State<AnimationImages> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: activeImage,
+      child: IndexedStack(
+        index: showIndex,
+        children: widget.images,
+      ),
     );
   }
 }
