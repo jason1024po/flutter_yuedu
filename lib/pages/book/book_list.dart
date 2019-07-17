@@ -15,16 +15,35 @@ class BookList extends StatefulWidget {
   _BookListState createState() => _BookListState();
 }
 
-class _BookListState extends State<BookList> {
+class _BookListState extends State<BookList>
+    with AutomaticKeepAliveClientMixin {
+  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+
     final provider = Provider.of<BookListProvider>(context, listen: false);
     provider.fetchData(widget.id);
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >
+          _scrollController.position.maxScrollExtent - 100) {
+        print('滑动到了最底部');
+        provider.fetchData(widget.id, loadMore: true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: MyAppBar(),
       body: Container(
@@ -38,18 +57,23 @@ class _BookListState extends State<BookList> {
   _getList(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    return Consumer<BookListProvider>(builder: (context, state, widget) {
+    return Consumer<BookListProvider>(builder: (context, state, w) {
       return LoadingAnimation(
         loading: state.isLoading,
         child: GridView.builder(
-            itemCount: state.data?.length ?? 0,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: (screenSize.width > screenSize.height) ? 6 : 3,
-                mainAxisSpacing: 10.0,
-                crossAxisSpacing: 10.0,
-                childAspectRatio: 0.64),
-            itemBuilder: (_, index) => HomeNormalBookItem(state.data[index])),
+          controller: _scrollController,
+          itemCount: state.data?.length ?? 0,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: (screenSize.width > screenSize.height) ? 6 : 3,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 0.64),
+          itemBuilder: (_, index) => HomeNormalBookItem(state.data[index]),
+        ),
       );
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

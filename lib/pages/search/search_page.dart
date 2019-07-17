@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yuedu/widget/loading_animation.dart';
+import 'package:flutter_yuedu/widget/main_refresh.dart';
 import 'package:flutter_yuedu/widget/my_app_bar.dart';
 
 class SearchPage extends StatefulWidget {
@@ -23,11 +24,16 @@ class _SearchPage extends State<SearchPage> {
               loading = !loading;
             });
           },
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 30),
-              child: Text(!loading ? "显示动画" : "隐藏动画"),
-            ),
+          child: Stack(
+            children: <Widget>[
+              MainRefresh(),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 30),
+                  child: Text(!loading ? "显示动画" : "隐藏动画"),
+                ),
+              )
+            ],
           ),
         ),
       ),

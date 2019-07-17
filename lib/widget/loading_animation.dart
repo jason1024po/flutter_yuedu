@@ -7,7 +7,7 @@ class LoadingAnimation extends StatelessWidget {
   final EdgeInsets padding;
   final bool loading;
   // 动画图片上
-  static List<Image> loadingImages = List<Image>.generate(20, (index) {
+  static List<Image> _loadingImages = List<Image>.generate(20, (index) {
     index++;
     if (index < 10) {
       return Image.asset("images/loading/book/book_swiping0$index.png");
@@ -25,7 +25,7 @@ class LoadingAnimation extends StatelessWidget {
         Positioned(
             child: Padding(
           padding: padding ?? EdgeInsets.only(bottom: 60),
-          child: loading ? AnimationImages(loadingImages) : Container(),
+          child: loading ? AnimationImages(_loadingImages) : Container(),
         ))
       ],
     );

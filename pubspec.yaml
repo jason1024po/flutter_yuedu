@@ -112,6 +112,16 @@ flutter:
     - images/loading/book/book_swiping18.png
     - images/loading/book/book_swiping19.png
     - images/loading/book/book_swiping20.png
+    # 首页下拉刷新
+    - images/loading/main/main_loading_frame1.png
+    - images/loading/main/main_loading_frame2.png
+    - images/loading/main/main_loading_frame3.png
+    - images/loading/main/main_loading_frame4.png
+    - images/loading/main/main_loading_frame5.png
+    - images/loading/main/main_loading_frame6.png
+    - images/loading/main/main_loading_frame7.png
+    - images/loading/main/main_loading_frame8.png
+    - images/loading/main/main_loading_frame9.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

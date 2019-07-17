@@ -41,6 +41,7 @@ public class UpdateVersionPlugin implements EventChannel.StreamHandler {
     }
     if (!o.toString().startsWith("http")){
       eventSink.error(TAG, "URL错误", o);
+      return;
     }
 
     AppUpdater update = new AppUpdater(context,o.toString()).setUpdateCallback(new UpdateCallback() {
