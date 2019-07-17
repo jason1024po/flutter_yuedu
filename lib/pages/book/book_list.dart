@@ -28,8 +28,7 @@ class _BookListState extends State<BookList>
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >
-          _scrollController.position.maxScrollExtent - 100) {
-        print('滑动到了最底部');
+          _scrollController.position.maxScrollExtent - 200) {
         provider.fetchData(widget.id, loadMore: true);
       }
     });

@@ -7,42 +7,49 @@ const URL = "app/index/more";
 class BookListProvider with ChangeNotifier {
   // 数据
   List<Map<String, Object>> data = [];
+
   bool isLoading = true;
 
   int pageSize = 20;
 
-  bool isLoadMore = false;
+  // 加载更多中
+  bool loadingMore = false;
 
+  bool hasMore = true;
+
+  // 下一页
   int get pageNow {
     return data.length ~/ pageSize;
   }
 
-  resetData() {
-    print("清数据");
-    data.clear();
-  }
-
   Future<void> fetchData(String id, {bool loadMore = false}) async {
-    if (isLoadMore) {
-      print("有加载更多");
+    if (loadingMore) {
+      print("更多加载进行中...");
       return;
-    } else {
-      if (!loadMore) resetData();
+    }
+    if (loadMore && !hasMore) {
+      print("没有更多数据了...");
+      return;
+    }
+    if (!loadMore) {
+      resetData();
+//      notifyListeners();
     }
 
-    isLoadMore = loadMore;
+    loadingMore = loadMore;
     isLoading = true;
-    notifyListeners();
-    print("获取列表数据");
+    print("获取列表数据....");
 
     int offset = pageSize * pageNow;
 
     // 网络
-    Http.post(URL +
-            "?appPageModuleDefinitionId=$id&appPageKey=STAGE_B&offset=$offset&limit=$pageSize")
-        .then((result) {
+    final param =
+        "?appPageModuleDefinitionId=$id&appPageKey=STAGE_B&offset=$offset&limit=$pageSize";
+    Http.post(URL + param).then((result) {
       final list = result.data["appPageModule"]["payload"]["books"];
-      if (pageNow == 0) data.clear();
+//      if (!loadMore) resetData();
+
+      hasMore = list.length == pageSize;
 
       data.addAll(List.from(list));
 
@@ -56,10 +63,16 @@ class BookListProvider with ChangeNotifier {
     });
   }
 
+  resetData() {
+    print("清状态");
+    hasMore = true;
+    data.clear();
+  }
+
   stopLoading() async {
     Future.delayed(Duration(milliseconds: 300), () {
       isLoading = false;
-      isLoadMore = false;
+      loadingMore = false;
       notifyListeners();
     });
   }
