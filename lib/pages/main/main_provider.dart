@@ -40,7 +40,7 @@ class MainProvider with ChangeNotifier {
     });
 
     Http.get(URL, version: "").then((res) {
-      _courseUrl = res.data["config"]["courseUrl"];
+      _courseUrl = res.body["config"]["courseUrl"];
       KeyValueStore.add(URL, _courseUrl);
     });
   }

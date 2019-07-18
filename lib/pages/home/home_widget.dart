@@ -1,6 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_yuedu/model/banner_model.dart';
+import 'package:flutter_yuedu/model/book_model.dart';
+import 'package:flutter_yuedu/model/column_model.dart';
+import 'package:flutter_yuedu/model/header_model.dart';
+import 'package:flutter_yuedu/model/home_quick_entrance_model.dart';
+import 'package:flutter_yuedu/model/series_model.dart';
 import 'package:flutter_yuedu/util/my_navigator.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +14,7 @@ import 'home_provider.dart';
 
 /// banner
 class HomeBanner extends StatelessWidget {
-  final List<Map<String, Object>> data;
+  final List<BannerModel> data;
 
   HomeBanner(this.data);
 
@@ -43,7 +49,7 @@ class HomeBanner extends StatelessWidget {
         return Swiper(
           viewportFraction: fraction,
           onTap: (index) {
-            MyNavigator.pushWithLink(data[index]["link"]);
+            MyNavigator.pushWithLink(data[index].link);
           },
           itemBuilder: (BuildContext context, int index) {
             return Container(
@@ -52,7 +58,7 @@ class HomeBanner extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: CachedNetworkImage(
-                      imageUrl: data[index]["imageUrl"],
+                      imageUrl: data[index].imageUrl,
                     ),
                   )),
             );
@@ -66,7 +72,7 @@ class HomeBanner extends StatelessWidget {
 
 /// icon 导航
 class HomeQuickEntrance extends StatelessWidget {
-  final List<Map<String, Object>> data;
+  final List<HomeQuickEntranceModel> data;
 
   HomeQuickEntrance(this.data);
 
@@ -77,8 +83,7 @@ class HomeQuickEntrance extends StatelessWidget {
       child: Flex(
         direction: Axis.horizontal,
         children: data
-            .map((item) =>
-                _menuItem(item["title"], item["imageUrl"], item["link"]))
+            .map((item) => _menuItem(item.title, item.imageUrl, item.link))
             .toList(),
       ),
     );
@@ -115,7 +120,7 @@ class HomeQuickEntrance extends StatelessWidget {
 /// 标题
 class HomeHeader extends StatelessWidget {
   // 标题
-  final Map<String, Object> data;
+  final HeaderModel data;
   HomeHeader(this.data);
 
   @override
@@ -126,26 +131,25 @@ class HomeHeader extends StatelessWidget {
         child: Row(
           children: <Widget>[
             CachedNetworkImage(
-              imageUrl: data["imageUrl"],
+              imageUrl: data.imageUrl,
               width: 20,
             ),
             Padding(
               padding: EdgeInsets.only(left: 5),
               child: Text(
-                data["title"],
+                data.title,
                 style: TextStyle(
                     fontSize: 17,
                     color: Color(0xff444444),
                     fontWeight: FontWeight.bold),
               ),
             ),
-            data["hasMore"]
+            data.hasMore
                 ? Expanded(
                     child: Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: () =>
-                          MyNavigator.pushWithLink(data["hasMoreLink"]),
+                      onTap: () => MyNavigator.pushWithLink(data.hasMoreLink),
                       child: Image.asset("images/main/main_more_arrow.png",
                           height: 30),
                     ),
@@ -158,18 +162,18 @@ class HomeHeader extends StatelessWidget {
 
 /// 全局 banner
 class HomeTinyBanner extends StatelessWidget {
-  final Map<String, Object> data;
+  final BannerModel data;
   HomeTinyBanner(this.data);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data["link"]),
+      onTap: () => MyNavigator.pushWithLink(data.link),
       child: Padding(
         padding: EdgeInsets.only(top: 10, bottom: 10),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: CachedNetworkImage(imageUrl: data["imageUrl"]),
+          child: CachedNetworkImage(imageUrl: data.imageUrl),
         ),
       ),
     );
@@ -178,7 +182,7 @@ class HomeTinyBanner extends StatelessWidget {
 
 /// 普通书
 class HomeNormalBook extends StatelessWidget {
-  final List<Map> data;
+  final List<BookModel> data;
 
   HomeNormalBook(this.data);
 
@@ -206,14 +210,14 @@ class HomeNormalBook extends StatelessWidget {
 
 /// 普通书item
 class HomeNormalBookItem extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final BookModel data;
 
   HomeNormalBookItem(this.data);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data["link"]),
+      onTap: () => MyNavigator.pushWithLink(data.link),
       child: Container(
         child: Column(
           children: <Widget>[
@@ -237,7 +241,7 @@ class HomeNormalBookItem extends StatelessWidget {
                         color: Color(0xfffbfbfb),
                         child: CachedNetworkImage(
                           useOldImageOnUrlChange: true,
-                          imageUrl: data["coverImageUrl"],
+                          imageUrl: data.coverImageUrl,
                           width: double.infinity,
                           fit: BoxFit.fitWidth,
                         )),
@@ -245,9 +249,9 @@ class HomeNormalBookItem extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       left: 0,
-                      child: CachedNetworkImage(
-                        imageUrl: data["subscriptUrl"] ?? "",
-                      ),
+                      child: data.subscriptUrl == null
+                          ? Container()
+                          : CachedNetworkImage(imageUrl: data.subscriptUrl),
                     )
                   ],
                 ),
@@ -256,7 +260,7 @@ class HomeNormalBookItem extends StatelessWidget {
             Container(
               padding: const EdgeInsets.fromLTRB(4, 5, 4, 5),
               child: Text(
-                data["title"],
+                data.title,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 12),
               ),
@@ -271,7 +275,7 @@ class HomeNormalBookItem extends StatelessWidget {
 
 /// 高类型
 class HomeHighlyRecommendedBook extends StatelessWidget {
-  final List<Map<String, Object>> data;
+  final List<BookModel> data;
 
   HomeHighlyRecommendedBook(this.data);
 
@@ -288,14 +292,14 @@ class HomeHighlyRecommendedBook extends StatelessWidget {
 
 /// 高类型 item
 class HomeHighlyRecommendedBookItem extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final BookModel data;
 
   HomeHighlyRecommendedBookItem(this.data);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data["link"]),
+      onTap: () => MyNavigator.pushWithLink(data.link),
       child: Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
         child: Stack(
@@ -316,7 +320,7 @@ class HomeHighlyRecommendedBookItem extends StatelessWidget {
                     width: 77,
                     color: Color(0xfffbfbfb),
                     child: CachedNetworkImage(
-                      imageUrl: data["coverImageUrl"],
+                      imageUrl: data.coverImageUrl,
                       fit: BoxFit.cover,
                       height: 106,
                     )),
@@ -327,7 +331,7 @@ class HomeHighlyRecommendedBookItem extends StatelessWidget {
               left: 95,
               right: 0,
               child: Text(
-                data["title"],
+                data.title,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: Color(0xff444444),
@@ -340,7 +344,7 @@ class HomeHighlyRecommendedBookItem extends StatelessWidget {
               left: 95,
               right: 0,
               child: Text(
-                data["tags"],
+                data.tags,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyle(color: Color(0xff9b9b9b), fontSize: 12),
@@ -356,7 +360,7 @@ class HomeHighlyRecommendedBookItem extends StatelessWidget {
                     color: Color(0xfff8f8f8),
                     borderRadius: BorderRadius.circular(6)),
                 child: Text(
-                  data["description"],
+                  data.description,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Color(0xff979797), fontSize: 12),
                 ),
@@ -377,7 +381,7 @@ class HomeHighlyRecommendedBookItem extends StatelessWidget {
 
 /// 专栏
 class HomeColumn extends StatelessWidget {
-  final List<Map<String, Object>> data;
+  final List<ColumnModel> data;
 
   HomeColumn(this.data);
 
@@ -394,17 +398,17 @@ class HomeColumn extends StatelessWidget {
 
   _getItem(int index) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      onTap: () => MyNavigator.pushWithLink(data[index].link),
       child: Container(
         padding: const EdgeInsets.only(left: 22, right: 22, top: 5, bottom: 5),
         child: Stack(
           children: <Widget>[
-            CachedNetworkImage(imageUrl: data[index]["imageUrl"]),
+            CachedNetworkImage(imageUrl: data[index].imageUrl),
             Positioned(
               left: 110,
               top: 32,
               child: Text(
-                data[index]["title"],
+                data[index].title,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
@@ -413,7 +417,7 @@ class HomeColumn extends StatelessWidget {
               left: 110,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.from(data[index]["subItemNames"])
+                children: List.from(data[index].subItemNames)
                     .map((item) => Padding(
                           padding: const EdgeInsets.only(top: 2, bottom: 2),
                           child: Row(
@@ -439,7 +443,7 @@ class HomeColumn extends StatelessWidget {
 
 /// 从书
 class HomeSeries extends StatelessWidget {
-  final List<Map<String, Object>> data;
+  final List<SeriesModel> data;
 
   HomeSeries(this.data);
 
@@ -467,7 +471,7 @@ class HomeSeries extends StatelessWidget {
 
   _getItem(int index) {
     return GestureDetector(
-      onTap: () => MyNavigator.pushWithLink(data[index]["link"]),
+      onTap: () => MyNavigator.pushWithLink(data[index].link),
       child: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -485,7 +489,7 @@ class HomeSeries extends StatelessWidget {
 //                      width: 100,
                 color: Color(0xfffbfbfb),
                 child: CachedNetworkImage(
-                  imageUrl: data[index]["imageUrl"],
+                  imageUrl: data[index].imageUrl,
                   fit: BoxFit.cover,
                 )),
           ),

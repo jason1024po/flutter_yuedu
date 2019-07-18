@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_yuedu/model/response.dart';
 import 'package:http/http.dart' as http;
 
 import '../config/config.dart';
@@ -14,8 +15,7 @@ class Http {
     if (response.statusCode != 200) {
       throw Exception(result);
     }
-
-    return Response(result["code"], result["message"], result["body"]);
+    return Response.fromJsonMap(result);
   }
 
   static Future<Response> post(String url,
@@ -24,17 +24,6 @@ class Http {
         await http.post(Api(url, version: version).toString(), body: body);
     var result = json.decode(response.body);
 
-    return Response(result["code"], result["message"], result["body"]);
+    return Response.fromJsonMap(result);
   }
-}
-
-/// 结果
-class Response {
-  int code;
-  String message;
-  bool isCache;
-  Duration cacheTime;
-  dynamic data;
-
-  Response(this.code, this.message, this.data);
 }

@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_yuedu/model/banner_model.dart';
+import 'package:flutter_yuedu/model/book_model.dart';
+import 'package:flutter_yuedu/model/column_model.dart';
+import 'package:flutter_yuedu/model/header_model.dart';
+import 'package:flutter_yuedu/model/home_quick_entrance_model.dart';
+import 'package:flutter_yuedu/model/series_model.dart';
 import 'package:flutter_yuedu/pages/login/login_page.dart';
 import 'package:flutter_yuedu/pages/search/search_page.dart';
 import 'package:flutter_yuedu/widget/loading_animation.dart';
@@ -140,54 +146,57 @@ class _HomePageState extends State<HomePage>
     final state = Provider.of<HomeProvider>(context);
     const padding = const EdgeInsets.fromLTRB(22, 5, 22, 5);
 
-    return state.data.map((item) {
-      final type = item["type"] as String;
-      final payload = Map.from(item["payload"]);
+    if (state.data == null) return [];
 
-      switch (type) {
+    return state.data.modules.map((item) {
+      final payload = item.payload;
+
+      switch (item.type) {
         case "BANNER":
           return SliverToBoxAdapter(
-            child: HomeBanner(List.from(payload["banners"] ?? [])),
+            child: HomeBanner(BannerModel.fromJsonList(payload["banners"])),
           );
         case "QUICK_ENTRANCE":
           return SliverToBoxAdapter(
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
-              child:
-                  HomeQuickEntrance(List.from(payload["quickEntrances"] ?? [])),
+              child: HomeQuickEntrance(HomeQuickEntranceModel.fromJsonList(
+                  payload["quickEntrances"])),
             ),
           );
         case "HEADER":
           return SliverToBoxAdapter(
             child: Padding(
               padding: padding,
-              child: HomeHeader(Map.from(payload)),
+              child: HomeHeader(HeaderModel.fromJsonMap(payload)),
             ),
           );
         case "NORMAL_BOOK":
         case "RECOMMENDED_BOOK":
-          return HomeNormalBook(List.from(payload["books"]));
+          return HomeNormalBook(BookModel.fromJsonList(payload["books"]));
         case "TINY_BANNER":
           return SliverToBoxAdapter(
             child: Padding(
               padding: padding,
-              child: HomeTinyBanner(Map.from(payload["tinyBanners"][0])),
+              child: HomeTinyBanner(
+                  BannerModel.fromJsonMap(payload["tinyBanners"][0])),
             ),
           );
         case "HIGHLY_RECOMMENDED_BOOK":
-          return HomeHighlyRecommendedBook(List.from(payload["books"]));
+          return HomeHighlyRecommendedBook(
+              BookModel.fromJsonList(payload["books"]));
         case "COLUMN":
-          return HomeColumn(List.from(payload["column"]));
+          return HomeColumn(ColumnModel.fromJsonList(payload["column"]));
         case "SERIES":
-          return HomeSeries(List.from(payload["series"]));
+          return HomeSeries(SeriesModel.fromJsonList(payload["series"]));
         default:
-          print(type);
+          print(item.type);
           break;
       }
 
       return SliverToBoxAdapter(
-        child: Text(type),
+        child: Text(item.type),
       );
     }).toList();
   }
