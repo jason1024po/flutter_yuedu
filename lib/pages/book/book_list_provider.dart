@@ -11,7 +11,7 @@ class BookListProvider with ChangeNotifier {
 
   bool isLoading = true;
 
-  int pageSize = 20;
+  int pageSize = 21;
 
   // 加载更多中
   bool loadingMore = false;
@@ -29,6 +29,7 @@ class BookListProvider with ChangeNotifier {
       return;
     }
     if (loadMore && !hasMore) {
+      showToast("没有更多数据");
       print("没有更多数据了...");
       return;
     }

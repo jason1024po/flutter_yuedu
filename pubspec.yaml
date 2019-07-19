@@ -91,6 +91,9 @@ flutter:
     - images/login/login_tail.png
     - images/member/member_background.png
     - images/member/member_sales_sprite.png
+    - images/bookdetails/player_bgCircle_light.png
+    - images/bookdetails/player_bgTriangle.png
+    - images/bookdetails/icon_share_22.png
     # 动画图片
     - images/loading/book/book_swiping01.png
     - images/loading/book/book_swiping02.png

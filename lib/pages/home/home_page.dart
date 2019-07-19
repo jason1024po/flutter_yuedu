@@ -191,12 +191,12 @@ class _HomePageState extends State<HomePage>
         case "SERIES":
           return HomeSeries(SeriesModel.fromJsonList(payload["series"]));
         default:
-          print(item.type);
+          print("未实现的新增类型:" + item.type);
           break;
       }
 
       return SliverToBoxAdapter(
-        child: Text(item.type),
+        child: Container(),
       );
     }).toList();
   }

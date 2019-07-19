@@ -24,15 +24,16 @@ class _SearchPage extends State<SearchPage> {
               loading = !loading;
             });
           },
-          child: Stack(
+          child: Column(
             children: <Widget>[
-              MainRefresh(),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 30),
-                  child: Text(!loading ? "显示动画" : "隐藏动画"),
-                ),
-              )
+              Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: Text(!loading ? "显示动画" : "隐藏动画"),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 100),
+                child: MainRefresh(),
+              ),
             ],
           ),
         ),

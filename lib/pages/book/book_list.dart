@@ -28,7 +28,7 @@ class _BookListState extends State<BookList>
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >
-          _scrollController.position.maxScrollExtent - 200) {
+          _scrollController.position.maxScrollExtent - 240) {
         provider.fetchData(widget.id, loadMore: true);
       }
     });

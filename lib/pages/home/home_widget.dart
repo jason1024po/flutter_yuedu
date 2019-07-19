@@ -58,6 +58,8 @@ class HomeBanner extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: CachedNetworkImage(
+                      placeholder: (_, __) =>
+                          Container(color: Color(0xfff6f6f6)),
                       imageUrl: data[index].imageUrl,
                     ),
                   )),
@@ -126,7 +128,6 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-//        padding: const EdgeInsets.only(left: 12),
         height: 40,
         child: Row(
           children: <Widget>[
@@ -150,8 +151,12 @@ class HomeHeader extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () => MyNavigator.pushWithLink(data.hasMoreLink),
-                      child: Image.asset("images/main/main_more_arrow.png",
-                          height: 30),
+                      child: Image.asset(
+                        "images/main/main_more_arrow.png",
+                        width: 100,
+                        height: 30,
+                        alignment: Alignment.centerRight,
+                      ),
                     ),
                   ))
                 : Container()
