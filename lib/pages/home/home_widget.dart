@@ -274,7 +274,6 @@ class HomeNormalBookItem extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
 
@@ -392,7 +391,6 @@ class HomeColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SliverFixedExtentList(
       itemExtent: 140.0,
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
