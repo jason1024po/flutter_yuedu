@@ -6,7 +6,7 @@ PGY_USER_KEY = ""  # 配置 userkey
 PGY_API_KEY = ""   # 配置 apikey
 
 
-def uploadIpaToPgyer(path):
+def upload_to_pgy(path):
     if not len(PGY_USER_KEY) or not len(PGY_API_KEY):
         print("请检查蒲公英配置~")
         return
