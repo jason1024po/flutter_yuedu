@@ -4,7 +4,6 @@ import requests
 from pathlib import Path
 
 from dingding.dingding import send_with_pgy_response
-from pgyer.pgyer_response import PGYResponse
 
 PGY_UPLOAD_RUL = "https://www.pgyer.com/apiv2/app/upload"
 PGY_USER_KEY = ""  # 配置 userkey
