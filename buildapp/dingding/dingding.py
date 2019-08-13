@@ -22,7 +22,7 @@ def send_with_pgy_response(data):
     print(json.dumps(data))
     # 内容
     text = """新版本提醒    
-    名称：**{buildName}({buildType})**    
+    名称：**{buildName}**-{buildType}    
     版本：**{buildVersion}({buildVersionNo})**(Build {buildBuildVersion})    
     大小：{buildFileSize} MB    
     时间：{buildUpdated}   
