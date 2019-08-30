@@ -12,10 +12,11 @@
 
 ### 准备实现的功能
 
-6. Android 打包 apk+上传蒲公英+~~发送消息钉钉~~
-7. ~~iOS 打包 ipa+上传蒲公英+发送消息钉钉~~
-8. ~~GitLab 自动触发打包流程~~
-9. 自动打包相关功能采用 Python3 编写，由于是第一次写 Python，代码会变动较多。文档要等我功能开发完成后再写(2019-08-07)。
+6. Android 打包 apk+上传蒲公英+发送消息钉钉
+7. iOS 打包 ipa+上传蒲公英+发送消息钉钉
+8. GitLab 自动触发打包流程
+9. 打包功能已经剥离为单独的功能了，下面的连接
+   [https://github.com/xushengjiang0/buildapp](https://github.com/xushengjiang0/buildapp)
 
 ## 截图
 
